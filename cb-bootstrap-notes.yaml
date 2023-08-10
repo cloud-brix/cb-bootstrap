@@ -1,0 +1,26 @@
+API Access:
+- this bootstrap should be recources accessible via 
+
+Adopt cloud-init to bootstrap lxd containers especially with respect to:
+- unattended ssh setup for containers
+
+Ssh target usage:
+- ansible deployment where applicable
+
+Functions:
+- bootstrap initial setup of cloud-brix environment
+- launch project containers
+  - db
+  - app-logics
+  - front-end
+  - push-sevice
+  - storage
+
+- project integration
+  - ingress setup
+  - pki setup
+
+- account management
+  - resources usage logs and analytics
+  - billing services
+
