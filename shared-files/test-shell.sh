@@ -4,7 +4,7 @@
 export HOST_USER="emp-09"
 export HOST_NAME="emp-09"
 export CB_OPERATOR="devops"
-export CLUSTER_MEMBER="routee-93"
+export CLUSTER_MEMBER="routed-93"
 export EXEC_FILE="host-update-cluster.sh"
 export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
 export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
