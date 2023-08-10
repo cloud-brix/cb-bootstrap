@@ -1,0 +1,43 @@
+### This is a YAML representation of the profile.
+### Any line starting with a '# will be ignored.
+###
+### A profile consists of a set of configuration items followed by a set of
+### devices.
+###
+### An example would look like:
+### name: onenic
+### config:
+###   raw.lxc: lxc.aa_profile=unconfined
+### devices:
+###   eth0:
+###     nictype: bridged
+###     parent: lxdbr0
+###     type: nic
+###
+### Note that the name is shown but cannot be changed
+
+config:
+  user.network-config: |
+    version: 2
+    ethernets:
+        $GEN_LXC_ETH:
+            addresses:
+            - $GEN_LXC_IP/32
+            nameservers:
+                addresses:
+                - 8.8.8.8
+                search: []
+            routes:
+            -   to: 0.0.0.0/0
+                via: $GEN_LXC_GATEWAY
+                on-link: true
+description: Default LXD profile
+devices:
+  $GEN_LXC_ETH:
+    ipv4.address: $GEN_LXC_IP
+    nictype: routed
+    parent: $GEN_LXC_PARENT
+    type: nic
+name: routed_$GEN_LXC_IP
+used_by: []
+
