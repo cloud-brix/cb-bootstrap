@@ -29,7 +29,7 @@ fxGit(){
     if [ -d "/home/${HOST_USER}/$projName" ] 
     then
         echo "--------$(hostname)/${EXEC_FILE}: cloud-brix files for ${HOST_USER}  will be updated"
-        cd /home/${HOST_USER}$projName
+        cd /home/${HOST_USER}/$projName
         git pull
         cd /home/emp-06/
     else
