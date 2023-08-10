@@ -26,7 +26,7 @@ fxSubHeader (){
 fxGit(){
     projName=$1
     gitUrl=$2
-    if [ -d "/home/${HOST_USER}$projName" ] 
+    if [ -d "/home/${HOST_USER}/$projName" ] 
     then
         echo "--------$(hostname)/${EXEC_FILE}: cloud-brix files for ${HOST_USER}  will be updated"
         cd /home/${HOST_USER}$projName
