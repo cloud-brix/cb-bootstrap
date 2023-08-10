@@ -1,5 +1,58 @@
 API Access:
-- this bootstrap should be recources accessible via 
+- this bootstrap should be recources accessible via cd-api
+- cloud-brix services are implemented as a corpdesk application
+
+User Projected Usage(json definitions):
+  describes environment architecture:
+  - l1 (pysical machines)
+  - l2 (lxd cluster members)
+  - l3 (worker nodes)
+  launch project containers:
+  - db
+  - db-cluster
+  - app-logics
+  - app-logic-clusters
+  - front-end
+  - push-sevice
+  - storage
+  - orgestration services
+    - microk8s
+    - docker-swarm
+  - email service
+  - analytics
+    - elk
+  - ussd
+  - sms
+  fintech services:
+  - payment acceptance service
+  - payment disbursment service
+  - payment integration (paypal, debit/credit cards, mpesa, pesa point)
+  - invoice/receipt services
+  - payment reports
+  - billing service
+  - crypto services
+  - kyc service
+
+  project access & integration:
+  - vrrp
+  - ingress setup
+  - pki setup
+  - domain services
+
+Sample Application Descriptions:
+  - cb-initial-boot
+  - db-sql:
+    - mysql
+    - postgre
+  
+  - ingress setup 
+  - db-no-sql
+    - mongodb
+    - redis
+  - Node.js
+  - Python App
+
+
 
 Adopt cloud-init to bootstrap lxd containers especially with respect to:
 - unattended ssh setup for containers
@@ -7,20 +60,28 @@ Adopt cloud-init to bootstrap lxd containers especially with respect to:
 Ssh target usage:
 - ansible deployment where applicable
 
+Stragegies:
+- Based on working shell scripts
+- Execute working shell script from git gist
+- Adopt cloud-init for bootstrapping lxd containers
+
 Functions:
 - bootstrap initial setup of cloud-brix environment
-- launch project containers
-  - db
-  - app-logics
-  - front-end
-  - push-sevice
-  - storage
+  cd-api: 
+  - 
 
-- project integration
-  - ingress setup
-  - pki setup
+
 
 - account management
   - resources usage logs and analytics
   - billing services
+
+UML Diagrams:
+https://github.com/demike/TsUML2
+https://www.npmjs.com/package/sol2uml
+https://github.com/markushedvall/node-plantuml
+https://socket.dev/npm/package/pocketbase-uml
+https://www.softwareideas.net/en/javascript-uml-diagram-tool
+
+
 
