@@ -191,6 +191,7 @@ fxInstalMysql(){
     # confirm operator is aleady setup
     # do unattended mysql installation
     # do unattended mysql-shell installation
+    echo ""
 }
 
 fxCreateMysqlCluster(){
@@ -202,11 +203,11 @@ fxCreateMysqlCluster(){
 }
 
 fxRestoreMysqlData(){
-    
+    echo ""
 }
 
 fxMysqlStatus(){
-    
+    echo ""
 }
 
 # -------------------------------------------------------------------------------------------------------
@@ -218,18 +219,19 @@ fxInstalNodejs(){
     # set mysql directories
     # do unattended mysql installation
     # do unattended mysql-shell installation
+    echo ""
 }
 
 fxCreateNodejsCluster(){
-    
+    echo ""
 }
 
 fxInstallNodejsApp(){
-    
+    echo ""
 }
 
 fxNodejsStatus(){
-    
+    echo ""
 }
 
 # -------------------------------------------------------------------------------------------------------
@@ -240,12 +242,13 @@ fxInstalCdMF(){
     # set mysql directories
     # do unattended mysql installation
     # do unattended mysql-shell installation
+    echo ""
 }
 
 fxCreateCdApp(){
-    
+    echo ""
 }
 
 fxCdStatus(){
-    
+    echo ""
 }
