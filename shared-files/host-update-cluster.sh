@@ -8,9 +8,8 @@ export CLUSTER_MEMBER="routed-93"
 export EXEC_FILE="host-update-cluster.sh"
 export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
 export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
-export FX_DIR="/tmp/fx.sh"
+export FX_DIR="${SHARED_FILES_CLUSTER_MEMBER}/fx.sh"
 
-cp ./fx.sh /tmp/fx.sh
 
 # print header
 cmdHead='
