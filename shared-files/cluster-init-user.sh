@@ -9,13 +9,14 @@ export EXEC_FILE="cluster-init-user.sh"
 export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
 export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
 export P_SECR=`cat /tmp/p`
+export FX_DIR="/tmp/fx.sh"
 
 cmdHead='
-    source ./fx.sh
+    source ${FX_DIR}
     fxHeader'
 
 cmdAddWorkerOperator='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "Add user(${CB_OPERATOR}) to cluster node"
     fxAddOperator ${CB_OPERATOR} ${P_SECR}
     fxSshKey

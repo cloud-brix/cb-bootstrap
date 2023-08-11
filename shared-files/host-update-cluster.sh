@@ -8,23 +8,24 @@ export CLUSTER_MEMBER="routed-93"
 export EXEC_FILE="host-update-cluster.sh"
 export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
 export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
+export FX_DIR="./fx.sh"
 
 
 # print header
 cmdHead='
-    source ./fx.sh
+    source ${FX_DIR}
     fxHeader'
 
 # clone or update files
 cmdGit='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "Update files from Git"
     fxGit "cb-bootstrap" "https://github.com/cloud-brix/cb-bootstrap.git" ${HOST_USER}'
 
 
 # push cb files to /tmp/ dir for cluster member
 cmdPushClusterFilesTmp='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "Move cb files to /tmp/ directory at ${CLUSTER_MEMBER}"
     fxPushClusterTmpFile "fx.sh"                
     fxPushClusterTmpFile "worker-init-user.sh"  
@@ -36,13 +37,13 @@ cmdPushClusterFilesTmp='
 
 # execute init-user in cluster member
 cmdInitClusterUser='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "Execute cluster-init-user.sh at ${CLUSTER_MEMBER}"
     fxExecClusterTmpFile "cluster-init-user.sh"'
 
 # push cb files to ~/.cb/ dir for cluster member
 cmdPushClusterFilesCb='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "PUSH POST-INITIAL FILES TO $clusterMember/home/$operator/.cb/ DIRECTORY"
     fxPushClusterCbFile "cluster-init-user.sh"          "" 
     fxPushClusterCbFile "p"                             ""
@@ -54,14 +55,14 @@ cmdPushClusterFilesCb='
 
 # reset permissions for operator in the cluster member   
 cmdClusterMemberResetPerm='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "PUSH POST-INITIAL FILES TO $clusterMember/home/$operator/.cb/ DIRECTORY"
     fxClusterMemberResetPerm'
 
 # do cb bootstrap the worker containers
 # containers would be for specific project eg db containers for given projects
 cmdExecClusterFilesCb='
-    source ./fx.sh
+    source ${FX_DIR}
     fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
     fxExecClusterCbFile "cluster-update-worker.sh"'
     
