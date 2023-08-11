@@ -1,37 +1,29 @@
 #!/bin/bash
 
 
-echo "."
-echo "."
-echo "."
-echo "--------$(hostname)/STARTING worker-init-user.sh"
-echo "--------$(hostname)/cluster-init-user.sh: whoami: $(whoami)"
-if [ -d "/home/devops/" ] 
-then
-    echo "--------$(hostname)/worker-init-user.sh: /home/devops/ dir exists"
-else
-    sudo deluser devops
-    sudo rm -r -f /home/devops
-    # add devops user
-    sudo useradd -m -p $(openssl passwd -1 yU0B14NC1PdE) devops
-fi
+# global variables
+export HOST_USER="emp-09"
+export HOST_NAME="emp-09"
+export CB_OPERATOR="devops"
+export CLUSTER_MEMBER="routed-93"
+export EXEC_FILE="worker-init-user.sh"
+export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
+export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
+export P_SECR=`cat /tmp/p`
 
-if [ -d "/home/devops/.cb/mysql-shell-scripts/" ] 
-then
-    echo "--------$(hostname)/worker-init-user.sh: /home/devops/.cb/mysql-shell-scripts/ dir exists"
-else
-    echo "--------$(hostname)/worker-init-user.sh: creating new .cb/mysql-shell-scriptsdir"
-    mkdir -p /home/devops/.cb/mysql-shell-scripts/
-fi
+cmdHead='
+    source ./fx.sh
+    fxHeader'
 
-chmod -R 755 /home/devops/
-# escalate devops to sudoer
-usermod -aG sudo devops
-cp /etc/sudoers /etc/sudoers.backup
-# suppress password prompt on switch to user
-bash -c 'echo "devops ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers'
-# enable password authentication for ssh connection
-cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
-sed -i -E 's/#?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-systemctl restart ssh
+cmdAddWorkerOperator='
+    source ./fx.sh
+    fxSubHeader "Add user(${CB_OPERATOR}) to worker node"
+    fxAddOperator ${CB_OPERATOR} ${P_SECR}'
+
+# concatenate required commands
+cmd="$cmdHead;$cmdAddWorkerOperator"
+
+# run commands
+bash -c "$cmd"
+
 

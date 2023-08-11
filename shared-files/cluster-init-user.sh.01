@@ -1,0 +1,52 @@
+#!/bin/bash
+
+operator="devops"
+echo "."
+echo "."
+echo "."
+echo "--------$(hostname)/STARTING cluster-init-user.sh"
+echo "--------$(hostname)/cluster-init-user.sh: whoami: $(whoami)"
+
+echo "--------$(hostname)/cluster-init-user.sh: system update"
+sudo sh /tmp/pre-init-user.sh
+
+if [ -d "/home/devops/" ] 
+then
+    echo "--------$(hostname)/cluster-init-user.sh: /home/devops/ dir exists"
+else
+    echo "--------$(hostname)/cluster-init-user.sh: adding user devops"
+    sudo useradd -m -p $(openssl passwd -1 yU0B14NC1PdE) devops
+fi
+
+if [ -d "/home/devops/.cb/mysql-shell-scripts/" ] 
+then
+    echo "--------$(hostname)/cluster-init-user.sh: /home/devops/.cb/mysql-shell-scripts/ dir exists"
+else
+    echo "--------$(hostname)/cluster-init-user.sh: creating new .cb/mysql-shell-scriptsdir"
+    mkdir -p /home/devops/.cb/mysql-shell-scripts/
+fi
+echo "--------$(hostname)/cluster-init-user.sh: setting devops profile"
+sudo chmod -R 755 /home/devops/
+# escalate devops to sudoer
+sudo usermod -aG sudo devops
+sudo cp /etc/sudoers /etc/sudoers.backup
+# suppress password prompt on switch to user
+sudo bash -c 'echo "devops ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers'
+echo "--------$(hostname)/cluster-init-user.sh: setting up ssh access"
+# enable password authentication for ssh connection
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+sudo sed -i -E 's/#?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo systemctl restart ssh
+mkdir -p /home/devops/.ssh
+
+echo "--------$(hostname)/host-update-cluster.sh: updating $clusterMember directories"
+sh /tmp/cluster-update-dirs.sh
+
+
+if [ -f "/home/devops/.ssh/id_rsa" ] 
+then
+    echo "--------ssh keys already exists"
+else
+    echo "--------creating ssh keys"
+    sh /tmp/ssh-key.sh devops
+fi

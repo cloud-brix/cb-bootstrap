@@ -1,123 +1,72 @@
 #!/bin/bash
 
-# use this on physical machine to update files
-# USAGE:
-# execute below in at any host (emp-09, emp-10, emp-11) 
-# cd ~/cb-bootstrap && git pull && sh ~/cb-bootstrap/shared-files/host-update-cluster.sh
-
-# # executing concatenated commands
-# cmd1="echo xx"
-# cmd2="echo yy"
-# cmd="$cmd1; $cmd2"
-# bash -c "$cmd"
-
-l1Hostname="emp-09"
-l1Operator="emp-09"
-
-l1Hostname="routed-93"
-l2Operator="devops"
-cmdHead=""
-
-bash -c '
-# executed at the physical machine
-echo "."
-echo "."
-echo "."
-echo "--------$(hostname)/STARTING host-update-cluster.sh"
-echo "--------$(hostname)/cluster-init-user.sh: whoami: $(whoami)"
-echo "--------$(hostname)/host-update-cluster.sh: executing at the physical machine"
-adminUser="emp-09"
-operator="devops"
-clusterMember="routed-93"
-if [ -d "/home/$adminUser/cb-bootstrap" ] 
-then
-    echo "--------$(hostname)/host-update-cluster.sh: cloud-brix files for $adminUser will be updated"
-    cd /home/$adminUser/cb-bootstrap
-    git fetch --all
-    cd /home/$adminUser/
-else
-    echo "--------$(hostname)/host-update-cluster.sh: updating source files for $adminUser"
-    git clone https://github.com/cloud-brix/cb-bootstrap.git
-fi
-
-# -------------------------------------------------------------------------------------------------------------------------------
-# DELETE INITIAL FILES FROM $clusterMember/tmp DIRECTORY
-# -------------------------------------------------------------------------------------------------------------------------------
-echo "--------$(hostname)/host-update-cluster.sh: remove worker-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/worker-init-user.sh
-
-echo "--------$(hostname)/host-update-cluster.sh: remove cluster-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/cluster-init-user.sh
-
-echo "--------$(hostname)/host-update-cluster.sh: remove shared-files/pre-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/pre-init-user.sh
-
-echo "--------$(hostname)/host-update-cluster.sh: remove shared-files/ssh-key.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/ssh-key.sh
-
-echo "--------$(hostname)/host-update-cluster.sh: remove shared-files/ssh-copy-id.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/ssh-copy-id.sh
-
-echo "--------$(hostname)/host-update-cluster.sh: remove shared-files/p from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/p
+# global variables
+export HOST_USER="emp-09"
+export HOST_NAME="emp-09"
+export CB_OPERATOR="devops"
+export CLUSTER_MEMBER="routed-93"
+export EXEC_FILE="host-update-cluster.sh"
+export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
+export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
 
 
+# print header
+cmdHead='
+    source ./fx.sh
+    fxHeader'
 
-# -------------------------------------------------------------------------------------------------------------------------------
-# PUSH INITIAL FILES TO $clusterMember/tmp DIRECTORY
-# -------------------------------------------------------------------------------------------------------------------------------
-echo "--------$(hostname)/host-update-cluster.sh: pushing worker-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/worker-init-user.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/worker-init-user.sh  $clusterMember/tmp/worker-init-user.sh
+# clone or update files
+cmdGit='
+    source ./fx.sh
+    fxSubHeader "Update files from Git"
+    fxGit "cb-bootstrap" "https://github.com/cloud-brix/cb-bootstrap.git" ${HOST_USER}'
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing cluster-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/cluster-init-user.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/cluster-init-user.sh  $clusterMember/tmp/cluster-init-user.sh
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/pre-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/pre-init-user.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/pre-init-user.sh  $clusterMember/tmp/pre-init-user.sh
+# push cb files to /tmp/ dir for cluster member
+cmdPushClusterFilesTmp='
+    source ./fx.sh
+    fxSubHeader "Move cb files to /tmp/ directory at ${CLUSTER_MEMBER}"
+    fxPushClusterTmpFile "fx.sh"                
+    fxPushClusterTmpFile "worker-init-user.sh"  
+    fxPushClusterTmpFile "cluster-init-user.sh" 
+    fxPushClusterTmpFile "pre-init-user.sh"     
+    fxPushClusterTmpFile "ssh-key.sh"           
+    fxPushClusterTmpFile "ssh-copy-id.sh"       
+    fxPushClusterTmpFile "p"'
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/ssh-key.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/ssh-key.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/ssh-key.sh  $clusterMember/tmp/ssh-key.sh
+# execute init-user in cluster member
+cmdInitClusterUser='
+    source ./fx.sh
+    fxSubHeader "Execute cluster-init-user.sh at ${CLUSTER_MEMBER}"
+    fxExecClusterTmpFile "cluster-init-user.sh"'
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/ssh-copy-id.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/sh-copy-id.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/ssh-copy-id.sh  $clusterMember/tmp/ssh-copy-id.sh
+# push cb files to ~/.cb/ dir for cluster member
+cmdPushClusterFilesCb='
+    source ./fx.sh
+    fxSubHeader "PUSH POST-INITIAL FILES TO $clusterMember/home/$operator/.cb/ DIRECTORY"
+    fxPushClusterCbFile "cluster-init-user.sh"          "" 
+    fxPushClusterCbFile "p"                             ""
+    fxPushClusterCbFile "cluster-update-worker.sh"      ""
+    fxPushClusterCbFile "cluster-update-dirs.sh"        ""
+    fxPushClusterCbFile "init_cluster.js"               ""
+    fxPushClusterCbFile "init_build_cluster.js"         "mysql-shell-scripts/"
+    fxPushClusterCbFile "build_cluster.js"              "mysql-shell-scripts/"'
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/p from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/p
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/p  $clusterMember/tmp/p
+# reset permissions for operator in the cluster member   
+cmdClusterMemberResetPerm='
+    source ./fx.sh
+    fxSubHeader "PUSH POST-INITIAL FILES TO $clusterMember/home/$operator/.cb/ DIRECTORY"
+    fxClusterMemberResetPerm'
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing worker-init-user.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/worker-init-user.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/worker-init-user.sh  $clusterMember/tmp/worker-init-user.sh
+# do cb bootstrap the worker containers
+# containers would be for specific project eg db containers for given projects
+cmdExecClusterFilesCb='
+    source ./fx.sh
+    fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
+    fxExecClusterCbFile "cluster-update-worker.sh"'
+    
+# concatenate required commands
+cmd="$cmdHead;$cmdGit;$cmdPushClusterFilesTmp;$cmdInitClusterUser;$cmdPushClusterFilesCb;$cmdClusterMemberResetPerm;$cmdExecClusterFilesCb;"
+# run commands
+bash -c "$cmd"
 
-echo "--------$(hostname)/host-update-cluster.sh: pushing cluster-update-dirs.sh from $adminUser to $clusterMember"
-lxc exec $clusterMember -- rm -f /tmp/cluster-update-dirs.sh
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/cluster-update-dirs.sh  $clusterMember/tmp/cluster-update-dirs.sh
-
-lxc exec $clusterMember -- sh /tmp/cluster-init-user.sh
-# -------------------------------------------------------------------------------------------------------------------------------
-
-# -------------------------------------------------------------------------------------------------------------------------------
-# PUSH POST-INITIAL FILES TO $clusterMember/home/$operator/.cb/ DIRECTORY
-# -------------------------------------------------------------------------------------------------------------------------------
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/cluster-init-user.sh from $adminUser to $clusterMember"
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/cluster-init-user.sh   $clusterMember/home/$operator/.cb/cluster-init-user.sh 
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/p from $adminUser to $clusterMember"
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/p                        $clusterMember/home/$operator/.cb/p
-echo "--------$(hostname)/host-update-cluster.sh: pushing shared-files/cluster-update-worker.sh from $adminUser to $clusterMember"
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/cluster-update-worker.sh $clusterMember/home/$operator/.cb/cluster-update-worker.sh
-echo "--------$(hostname)/host-update-cluster.sh: moving cluster-update-dirs.sh to controller machine"
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/cluster-update-dirs.sh   $clusterMember/home/$operator/.cb/cluster-update-dirs.sh
-echo "--------$(hostname)/host-update-cluster.sh: pushing init_cluster.js from $adminUser to $clusterMember"
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/init_cluster.js     $clusterMember/home/devops/.cb/mysql-shell-scripts/init_cluster.js
-echo "--------$(hostname)/host-update-cluster.sh: pushing init_build_cluster.js from $adminUser to $clusterMember"
-lxc file push /home/$adminUser/cb-bootstrap/shared-files/build_cluster.js    $clusterMember/home/devops/.cb/mysql-shell-scripts/build_cluster.js
-
-lxc exec $clusterMember -- chown -R devops:devops /home/devops/
-lxc exec $clusterMember -- chmod -R 775 /home/devops/
-lxc exec $clusterMember -- sh /home/$operator/.cb/cluster-update-worker.sh
-'
