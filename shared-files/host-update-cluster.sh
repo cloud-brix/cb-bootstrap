@@ -65,7 +65,7 @@ cmdLaunchWorkers='
     fxExecClusterCbFile "cluster-update-worker.sh"'
     
 # concatenate required commands
-cmd="$cmdHead;$cmdGit;$cmdPushClusterFilesTmp;$cmdInitClusterUser;$cmdPushClusterFilesCb;$cmdClusterMemberResetPerm;"
+cmd="$cmdHead;$cmdGit;$cmdPushClusterFilesTmp;$cmdInitClusterUser;$cmdPushClusterFilesCb;$cmdClusterMemberResetPerm;$cmdLaunchWorkers"
 # run commands
 bash -c "$cmd"
 
