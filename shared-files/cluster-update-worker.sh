@@ -66,6 +66,7 @@ do
     # 1. install fx.sh file
     # 2. install application specific files based on json file
     # sudo lxc exec ${APP_NAME}$j -- rm -f /home/devops/.cb/worker-init-user.sh
+    sudo lxc exec ${APP_NAME}$j -- rm -f /tmp/fx.sh
     sudo lxc exec ${APP_NAME}$j -- rm -f /home/devops/.cb/mysql-shell-scripts/init_cluster.js
     sudo lxc exec ${APP_NAME}$j -- rm -f /home/devops/.cb/mysql-shell-scripts/build_cluster.js
 
@@ -75,6 +76,7 @@ do
     # echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/pre-init-user.sh from $clusterMember to ${APP_NAME}$j"
     # lxc file push /tmp/pre-init-user.sh  ${APP_NAME}$j/tmp/pre-init-user.sh
     # sudo lxc exec ${APP_NAME}$j -- sh /tmp/worker-init-user.sh
+    sudo lxc push /tmp/fx.sh ${APP_NAME}$j/tmp/fx.sh
 
     echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/p from $clusterMember to ${APP_NAME}$j"
     # remove destination file
