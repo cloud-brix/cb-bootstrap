@@ -44,14 +44,12 @@ cmdInitClusterUser='
 # push cb files to ~/.cb/ dir for cluster member
 cmdPushClusterFilesCb='
     source ${FX_DIR}
-    fxSubHeader "PUSH POST-INITIAL FILES TO $clusterMember/home/$operator/.cb/ DIRECTORY"
+    fxSubHeader "PUSH POST-INITIAL FILES TO ${CLUSTER_MEMBER}/home/${CB_OPERATOR}/.cb/ DIRECTORY"
     fxPushClusterCbFile "cluster-init-user.sh"          "" 
     fxPushClusterCbFile "p"                             ""
     fxPushClusterCbFile "cluster-update-worker.sh"      ""
     fxPushClusterCbFile "cluster-update-dirs.sh"        ""
-    fxPushClusterCbFile "init_cluster.js"               ""
-    fxPushClusterCbFile "init_build_cluster.js"         "mysql-shell-scripts/"
-    fxPushClusterCbFile "build_cluster.js"              "mysql-shell-scripts/"'
+    fxPushClusterCbFile "init_cluster.js"               ""'
 
 # reset permissions for operator in the cluster member   
 cmdClusterMemberResetPerm='
@@ -61,13 +59,13 @@ cmdClusterMemberResetPerm='
 
 # do cb bootstrap the worker containers
 # containers would be for specific project eg db containers for given projects
-cmdExecClusterFilesCb='
+cmdLaunchWorkers='
     source ${FX_DIR}
     fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
     fxExecClusterCbFile "cluster-update-worker.sh"'
     
 # concatenate required commands
-cmd="$cmdHead;$cmdGit;$cmdPushClusterFilesTmp;$cmdInitClusterUser;$cmdPushClusterFilesCb;$cmdClusterMemberResetPerm;$cmdExecClusterFilesCb;"
+cmd="$cmdHead;$cmdGit;$cmdPushClusterFilesTmp;$cmdInitClusterUser;$cmdPushClusterFilesCb;$cmdClusterMemberResetPerm;"
 # run commands
 bash -c "$cmd"
 

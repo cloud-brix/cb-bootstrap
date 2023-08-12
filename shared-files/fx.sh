@@ -77,6 +77,9 @@ fxPushClusterTmpFile(){
 # echo "--------$(hostname)/host-update-cluster.sh: pushing worker-init-user.sh from $adminUser to ${CLUSTER_MEMBER}"
 # lxc exec ${CLUSTER_MEMBER} -- rm -f /tmp/worker-init-user.sh
 # lxc file push /home/$adminUser/cb-bootstrap/shared-files/worker-init-user.sh  ${CLUSTER_MEMBER}/tmp/worker-init-user.sh
+# Usage:
+# fxPushClusterCbFile "build_cluster.js" "mysql-shell-scripts/"
+# fxPushClusterCbFile "cluster-update-dirs.sh"  ""
 fxPushClusterCbFile(){
     subjectF=$1
     cbDir=$2

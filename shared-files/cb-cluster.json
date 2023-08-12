@@ -1,0 +1,24 @@
+{
+    "name": "cd-db",
+    "cbUser": {
+        "name": "devops",
+        "uid": ""
+    },
+    "parentProject": "cb",
+    "container": {
+        "image": "ubuntu:22.04",
+        "netStrategy": "default",
+        "profiles": [
+            {
+                "name": "default"
+            }
+        ],
+        "replicas": 3,
+        "module":{
+            "type":"db",
+            "brand":"mysql-cluster",
+            "files":[{}],
+            "cmd":""
+        }
+    }
+}
