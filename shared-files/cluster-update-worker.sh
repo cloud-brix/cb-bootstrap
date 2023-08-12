@@ -76,7 +76,7 @@ do
     # echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/pre-init-user.sh from $clusterMember to ${APP_NAME}$j"
     # lxc file push /tmp/pre-init-user.sh  ${APP_NAME}$j/tmp/pre-init-user.sh
     # sudo lxc exec ${APP_NAME}$j -- sh /tmp/worker-init-user.sh
-    sudo lxc push /tmp/fx.sh ${APP_NAME}$j/tmp/fx.sh
+    sudo lxc file push /tmp/fx.sh ${APP_NAME}$j/tmp/fx.sh
 
     echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/p from $clusterMember to ${APP_NAME}$j"
     # remove destination file
