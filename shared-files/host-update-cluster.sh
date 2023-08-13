@@ -47,8 +47,9 @@ cmdPushClusterFilesCb='
     fxSubHeader "PUSH POST-INITIAL FILES TO ${CLUSTER_MEMBER}/home/${CB_OPERATOR}/.cb/ DIRECTORY"
     fxPushClusterCbFile "cluster-init-user.sh"          "" 
     fxPushClusterCbFile "p"                             ""
-    fxPushClusterCbFile "cluster-update-worker.sh"      ""
     fxPushClusterCbFile "cluster-update-worker-mf.sh"      ""
+    fxPushClusterCbFile "cluster-update-worker-nodejs.sh"      ""
+    fxPushClusterCbFile "cluster-update-worker-mysql-cluster.sh"      ""
     fxPushClusterCbFile "cluster-update-dirs.sh"        ""
     fxPushClusterCbFile "init_cluster.js"               ""'
 
@@ -63,8 +64,9 @@ cmdClusterMemberResetPerm='
 cmdLaunchWorkers='
     source ${FX_DIR}
     fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
-    fxExecClusterCbFile "cluster-update-worker.sh"
-    fxExecClusterCbFile "cluster-update-worker-mf.sh"'
+    fxExecClusterCbFile "cluster-update-worker-mf.sh"
+    fxExecClusterCbFile "cluster-update-worker-nodejs.sh"
+    fxExecClusterCbFile "cluster-update-worker-mysql-cluster.sh"'
 
 # update host file for cluster members
     
