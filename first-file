@@ -1,0 +1,101 @@
+
+Location:MyDrive/emp/corpdesk development/cd-bu/Dump20220829.sql
+Link: https://drive.google.com/file/d/179pOcB3waCIzVNIl7_r9NQtxCmPzGu6o/view?usp=drive_link
+
+
+cb-bootstrap
+
+git remote set-url origin new.git.url/here
+git@github.com:georemo/cb-ui.git
+git@github.com:cloud-brix/cb-ui.git
+git remote set-url origin git@github.com:cloud-brix/cb-ui.git
+
+
++-----------+---------+----------------------+------+-----------+-----------+------------+
+|   NAME    |  STATE  |         IPV4         | IPV6 |   TYPE    | SNAPSHOTS |  LOCATION  |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+| cd-api-01 | RUNNING | 240.103.0.121 (eth0) |      | CONTAINER | 0         | routed-103 |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+| cd-api-02 | RUNNING | 240.104.0.10 (eth0)  |      | CONTAINER | 0         | routed-104 |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+| cd-api-03 | RUNNING | 240.105.0.9 (eth0)   |      | CONTAINER | 0         | routed-105 |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+| cd-db-01  | RUNNING | 240.93.0.172 (eth0)  |      | CONTAINER | 0         | routed-93  |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+| cd-db-02  | RUNNING | 240.94.0.155 (eth0)  |      | CONTAINER | 0         | routed-94  |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+| cd-db-03  | RUNNING | 240.95.0.221 (eth0)  |      | CONTAINER | 0         | routed-95  |
++-----------+---------+----------------------+------+-----------+-----------+------------+
+
+
+root@cd-api-01:~# su devops
+$ cd ~
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+su devops  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 15916  100 15916    0     0  14347      0  0:00:01  0:00:01 --:--:-- 14338
+=> Downloading nvm from git to '/home/devops/.nvm'
+=> Cloning into '/home/devops/.nvm'...
+remote: Enumerating objects: 360, done.
+remote: Counting objects: 100% (360/360), done.
+remote: Compressing objects: 100% (306/306), done.
+remote: Total 360 (delta 40), reused 171 (delta 28), pack-reused 0
+Receiving objects: 100% (360/360), 220.23 KiB | 924.00 KiB/s, done.
+Resolving deltas: 100% (40/40), done.
+* (HEAD detached at FETCH_HEAD)
+  master
+=> Compressing and cleaning up git repository
+
+=> Appending nvm source string to /home/devops/.profile
+=> bash_completion source string already in /home/devops/.profile
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+$ nvm install v16.20.1
+
+192.168.0.9  emp-09
+192.168.0.10 emp-10
+192.168.0.11 emp-11
+
+192.168.0.90 cb.ha
+192.168.0.91 routed-91
+192.168.0.92 routed-92
+192.168.0.93 routed-93
+192.168.0.94 routed-94
+192.168.0.95 routed-95
+192.168.0.96 routed-96
+192.168.0.97 routed-97
+
+192.168.0.101 routed-101
+192.168.0.102 routed-102
+192.168.0.103 routed-103
+192.168.0.104 routed-104
+192.168.0.105 routed-105
+192.168.0.106 routed-106
+192.168.0.107 routed-107
+
+192.168.0.111 routed-111
+192.168.0.112 routed-112
+192.168.0.113 routed-113
+192.168.0.114 routed-114
+192.168.0.115 routed-115
+192.168.0.116 routed-116
+192.168.0.117 routed-117
+
+240.93.0.172 cd-db-01
+240.94.0.155 cd-db-02
+240.95.0.221 cd-db-03
+
+240.103.0.121 cd-api-01
+240.104.0.10 cd-api-02
+240.105.0.9 cd-api-03
+
+create user 'goremo'@'%' identified by 'yU0B14NC1PdE';
+GRANT ALL PRIVILEGES ON *.* TO 'goremo'@'%';
+
+curl -k -X POST -H 'Content-Type: application/json' -d '{ "ctx": "Sys", "m": "User", "c": "User", "a": "Login", "dat": { "f_vals": [ { "data": { "userName": "karl", "password": "secret", "consumerGuid": "B0B3DA99-1859-A499-90F6-1E3F69575DCD" } } ], "token": null }, "args": null }' http://cd-api-01:3001 -v
+
+
+
+

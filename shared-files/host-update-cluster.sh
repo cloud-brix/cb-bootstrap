@@ -48,6 +48,7 @@ cmdPushClusterFilesCb='
     fxPushClusterCbFile "cluster-init-user.sh"          "" 
     fxPushClusterCbFile "p"                             ""
     fxPushClusterCbFile "cluster-update-worker.sh"      ""
+    fxPushClusterCbFile "cluster-update-worker-mf.sh"      ""
     fxPushClusterCbFile "cluster-update-dirs.sh"        ""
     fxPushClusterCbFile "init_cluster.js"               ""'
 
@@ -62,7 +63,10 @@ cmdClusterMemberResetPerm='
 cmdLaunchWorkers='
     source ${FX_DIR}
     fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
-    fxExecClusterCbFile "cluster-update-worker.sh"'
+    fxExecClusterCbFile "cluster-update-worker.sh"
+    fxExecClusterCbFile "cluster-update-worker-mf.sh"'
+
+# update host file for cluster members
     
 # concatenate required commands
 cmd="$cmdHead;$cmdGit;$cmdPushClusterFilesTmp;$cmdInitClusterUser;$cmdPushClusterFilesCb;$cmdClusterMemberResetPerm;$cmdLaunchWorkers"

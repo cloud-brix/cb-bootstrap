@@ -49,11 +49,12 @@ cmdHead='
 # list of files to place in /tmp/file of each instance
 # this can be done via gist, cloud-init or manual
 # 
-count=3
-i=0;
-while [ "$i" -lt $count ]
+
+# count=3
+# i=0;
+# while [ "$i" -lt $count ]
+for instance in cd-shell-01 cd-user-01 cd-moduleman-01 cd-comm-01 cd-pub-01 cd-sio-01;
 do
-    j=$(($i + 1))
 
     # create container as per json description
 
@@ -66,36 +67,36 @@ do
     # -------------------------------------------------------------------------------------------------------------------------------
     # 1. install fx.sh file
     # 2. install application specific files based on json file
-    # sudo lxc exec ${APP_NAME}$j -- rm -f /home/devops/.cb/worker-init-user.sh
-    sudo lxc exec ${APP_NAME}$j -- rm -f /tmp/fx.sh
-    sudo lxc exec ${APP_NAME}$j -- rm -f /home/devops/.cb/mysql-shell-scripts/init_cluster.js
-    sudo lxc exec ${APP_NAME}$j -- rm -f /home/devops/.cb/mysql-shell-scripts/build_cluster.js
+    # sudo lxc exec $instance -- rm -f /home/devops/.cb/worker-init-user.sh
+    sudo lxc exec $instance -- rm -f /tmp/fx.sh
+    sudo lxc exec $instance -- rm -f /home/devops/.cb/mysql-shell-scripts/init_cluster.js
+    sudo lxc exec $instance -- rm -f /home/devops/.cb/mysql-shell-scripts/build_cluster.js
 
     # -------------------------------------------------------------------------------------------------------------------------------
     # PUSH INITIAL FILES TO worker container /home/$operator/.cb/ DIRECTORY
     # -------------------------------------------------------------------------------------------------------------------------------
-    # echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/pre-init-user.sh from $clusterMember to ${APP_NAME}$j"
-    # lxc file push /tmp/pre-init-user.sh  ${APP_NAME}$j/tmp/pre-init-user.sh
-    # sudo lxc exec ${APP_NAME}$j -- sh /tmp/worker-init-user.sh
-    sudo lxc file push /tmp/fx.sh ${APP_NAME}$j/tmp/fx.sh
+    # echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/pre-init-user.sh from $clusterMember to $instance"
+    # lxc file push /tmp/pre-init-user.sh  $instance/tmp/pre-init-user.sh
+    # sudo lxc exec $instance -- sh /tmp/worker-init-user.sh
+    sudo lxc file push /tmp/fx.sh $instance/tmp/fx.sh
 
-    echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/p from $clusterMember to ${APP_NAME}$j"
+    echo "--------$(hostname)/cluster-update-worker.sh: pushing shared-files/p from $clusterMember to $instance"
     # remove destination file
-    lxc exec ${APP_NAME}$j -- rm -f /tmp/p
+    lxc exec $instance -- rm -f /tmp/p
     # send file
-    lxc file push /tmp/p ${APP_NAME}$j/tmp/p
-    echo "--------$(hostname)/cluster-update-worker.sh: pushing worker-init-user.sh from $clusterMember to ${APP_NAME}$j"
+    lxc file push /tmp/p $instance/tmp/p
+    echo "--------$(hostname)/cluster-update-worker.sh: pushing worker-init-user.sh from $clusterMember to $instance"
     # remove destination file
-    lxc exec ${APP_NAME}$j -- rm -f /tmp/worker-init-user.sh 
+    lxc exec $instance -- rm -f /tmp/worker-init-user.sh 
     # send file
-    lxc file push /tmp/worker-init-user.sh      ${APP_NAME}$j/tmp/worker-init-user.sh
-    echo "--------$(hostname)/cluster-update-worker.sh: setting up initial user at ${APP_NAME}$j"
-    sudo lxc exec ${APP_NAME}$j -- sh /tmp/worker-init-user.sh
-    echo "--------$(hostname)/cluster-update-worker.sh: pushing init_cluster.js from $clusterMember to ${APP_NAME}$j"
-    sudo lxc file push /home/devops/.cb/mysql-shell-scripts/init_cluster.js             ${APP_NAME}$j/home/devops/.cb/mysql-shell-scripts/init_cluster.js
-    echo "--------$(hostname)/cluster-update-worker.sh: pushing init_build_cluster.js from $clusterMember to ${APP_NAME}$j"
-    sudo lxc file push /home/devops/.cb/mysql-shell-scripts/build_cluster.js            ${APP_NAME}$j/home/devops/.cb/mysql-shell-scripts/build_cluster.js
-    sudo lxc exec ${APP_NAME}$j -- chown -R devops:devops /home/devops/
-    sudo lxc exec ${APP_NAME}$j -- chmod -R 775 /home/devops/
+    lxc file push /tmp/worker-init-user.sh      $instance/tmp/worker-init-user.sh
+    echo "--------$(hostname)/cluster-update-worker.sh: setting up initial user at $instance"
+    sudo lxc exec $instance -- sh /tmp/worker-init-user.sh
+    echo "--------$(hostname)/cluster-update-worker.sh: pushing init_cluster.js from $clusterMember to $instance"
+    sudo lxc file push /home/devops/.cb/mysql-shell-scripts/init_cluster.js             $instance/home/devops/.cb/mysql-shell-scripts/init_cluster.js
+    echo "--------$(hostname)/cluster-update-worker.sh: pushing init_build_cluster.js from $clusterMember to $instance"
+    sudo lxc file push /home/devops/.cb/mysql-shell-scripts/build_cluster.js            $instance/home/devops/.cb/mysql-shell-scripts/build_cluster.js
+    sudo lxc exec $instance -- chown -R devops:devops /home/devops/
+    sudo lxc exec $instance -- chmod -R 775 /home/devops/
     i=$(($i + 1))
 done
