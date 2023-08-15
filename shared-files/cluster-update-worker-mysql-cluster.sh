@@ -49,6 +49,12 @@ do
         fxPushWorkerTmpFile "installer-mysql.sh"  ${CURRENT_INSTANCE}   
         fxPushWorkerTmpFile "p"                   ${CURRENT_INSTANCE}' 
 
+    cmdInitWorker='
+        source ${FX_DIR}
+        fxSubHeader "Initialize worker node"
+        fxExecWorkerTmpFile "pre-init-user.sh"     ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-init-user.sh"  ${CURRENT_INSTANCE}' 
+        
     cmdPushWorkerFilesCb='
         source ${FX_DIR}
         fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/.cb/ directory"
@@ -58,11 +64,7 @@ do
         fxPushWorkerCbFile "init_cluster.js"  ${CURRENT_INSTANCE}              
         fxPushWorkerCbFile "build_cluster.js" ${CURRENT_INSTANCE}' 
 
-    cmdInitWorker='
-        source ${FX_DIR}
-        fxSubHeader "Initialize worker node"
-        fxExecWorkerTmpFile "pre-init-user.sh"     ${CURRENT_INSTANCE}
-        fxExecWorkerTmpFile "worker-init-user.sh"  ${CURRENT_INSTANCE}' 
+    
 
     cmdInstallations='
         source ${FX_DIR}
