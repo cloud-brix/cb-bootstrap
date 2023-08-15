@@ -42,7 +42,7 @@ do
 
     cmdPushWorkerFilesTmp='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/tmp/ directory"
+        fxSubHeader "${CURRENT_INSTANCE}: Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/tmp/ directory"
         fxPushWorkerTmpFile "fx.sh"                 ${CURRENT_INSTANCE}
         fxPushWorkerTmpFile "pre-init-user.sh"      ${CURRENT_INSTANCE}              
         fxPushWorkerTmpFile "worker-init-user.sh"   ${CURRENT_INSTANCE}
@@ -52,15 +52,15 @@ do
 
     cmdInitWorker='
         source ${FX_DIR}
-        fxSubHeader "Initialize worker node"
+        fxSubHeader "${CURRENT_INSTANCE}:Initialize worker node"
         fxExecWorkerTmpFile "pre-init-user.sh"       ${CURRENT_INSTANCE}
         fxExecWorkerTmpFile "worker-init-user.sh"    ${CURRENT_INSTANCE}
         fxExecWorkerTmpFile "worker-update-dirs.sh"  ${CURRENT_INSTANCE}' 
 
     cmdPushWorkerFilesCb='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb/ directory"
-        echo "contents of ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb:"
+        fxSubHeader "${CURRENT_INSTANCE}: Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb/ directory"
+        echo "contents of ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb in ${CURRENT_INSTANCE}:"
         lxc exec ${CURRENT_INSTANCE} -- ls -la /home/${CB_OPERATOR}/.cb
         fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}
         fxPushWorkerCbFile "init_cluster.js"  ${CURRENT_INSTANCE}              
@@ -68,7 +68,7 @@ do
 
     cmdInstallations='
         source ${FX_DIR}
-        fxSubHeader "Install mysql"
+        fxSubHeader "${CURRENT_INSTANCE}: Install mysql"
         fxExecWorkerTmpFile "installer-mysql.sh"     ${CURRENT_INSTANCE}
         # note that post installations are done on one machine only' 
 

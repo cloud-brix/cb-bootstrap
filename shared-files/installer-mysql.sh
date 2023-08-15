@@ -42,3 +42,6 @@ sudo -E apt-get install mysql-server mysql-client mysql-shell --assume-yes --for
 # sed -i -E "s/#?bind-address = 127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 sudo systemctl restart mysql
 
+# create user
+# https://stackoverflow.com/questions/33470753/create-mysql-database-and-user-in-bash-script
+
