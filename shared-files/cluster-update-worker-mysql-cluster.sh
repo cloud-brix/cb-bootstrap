@@ -52,8 +52,9 @@ do
     cmdInitWorker='
         source ${FX_DIR}
         fxSubHeader "Initialize worker node"
-        fxExecWorkerTmpFile "pre-init-user.sh"     ${CURRENT_INSTANCE}
-        fxExecWorkerTmpFile "worker-init-user.sh"  ${CURRENT_INSTANCE}' 
+        fxExecWorkerTmpFile "pre-init-user.sh"       ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-init-user.sh"    ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-update-dirs.sh"  ${CURRENT_INSTANCE}' 
 
     cmdPushWorkerFilesCb='
         source ${FX_DIR}
