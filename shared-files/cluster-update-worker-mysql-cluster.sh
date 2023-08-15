@@ -38,33 +38,34 @@ i=0;
 while [ "$i" -lt $count ]
 do
     j=$(($i + 1))
+    export CURRENT_INSTANCE="${APP_NAME}$j"
 
     cmdPushWorkerFilesTmp='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${APP_NAME}$j/tmp/ directory"
-        fxPushWorkerTmpFile "fx.sh"               ${APP_NAME}$j
-        fxPushWorkerTmpFile "pre-init-user.sh"    ${APP_NAME}$j              
-        fxPushWorkerTmpFile "worker-init-user.sh" ${APP_NAME}$j
-        fxPushWorkerTmpFile "installer-mysql.sh"  ${APP_NAME}$j   
-        fxPushWorkerTmpFile "p"                   ${APP_NAME}$j' 
+        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/tmp/ directory"
+        fxPushWorkerTmpFile "fx.sh"               ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "pre-init-user.sh"    ${CURRENT_INSTANCE}              
+        fxPushWorkerTmpFile "worker-init-user.sh" ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "installer-mysql.sh"  ${CURRENT_INSTANCE}   
+        fxPushWorkerTmpFile "p"                   ${CURRENT_INSTANCE}' 
 
     cmdPushWorkerFilesCb='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${APP_NAME}$j/.cb/ directory"
-        fxPushWorkerCbFile "fx.sh"            ${APP_NAME}$j
-        fxPushWorkerCbFile "init_cluster.js"  ${APP_NAME}$j              
-        fxPushWorkerCbFile "build_cluster.js" ${APP_NAME}$j' 
+        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/.cb/ directory"
+        fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}
+        fxPushWorkerCbFile "init_cluster.js"  ${CURRENT_INSTANCE}              
+        fxPushWorkerCbFile "build_cluster.js" ${CURRENT_INSTANCE}' 
 
     cmdInitWorker='
         source ${FX_DIR}
         fxSubHeader "Initialize worker node"
-        fxExecWorkerTmpFile "pre-init-user.sh"     ${APP_NAME}$j
-        fxExecWorkerTmpFile "worker-init-user.sh"  ${APP_NAME}$j' 
+        fxExecWorkerTmpFile "pre-init-user.sh"     ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-init-user.sh"  ${CURRENT_INSTANCE}' 
 
     cmdInstallations='
         source ${FX_DIR}
         fxSubHeader "Install mysql"
-        fxExecWorkerTmpFile "installer-mysql.sh"     ${APP_NAME}$j
+        fxExecWorkerTmpFile "installer-mysql.sh"     ${CURRENT_INSTANCE}
         # note that post installations are done on one machine only' 
 
     # concatenate required commands
