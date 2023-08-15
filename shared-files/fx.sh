@@ -66,7 +66,7 @@ fxRmClusterMemberTmpFile(){
 # lxc file push /home/$adminUser/cb-bootstrap/shared-files/worker-init-user.sh  ${CLUSTER_MEMBER}/tmp/worker-init-user.sh
 fxPushClusterTmpFile(){
     subjectF=$1
-    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${HOST_NAME} to ${CLUSTER_MEMBER}"
+    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${SHARED_FILES_HOST}/ to ${CLUSTER_MEMBER}/tmp/"
     lxc exec ${CLUSTER_MEMBER} -- rm -f /tmp/$subjectF
     lxc file push ${SHARED_FILES_HOST}/$subjectF  ${CLUSTER_MEMBER}/tmp/$subjectF
 }
@@ -75,7 +75,7 @@ fxPushClusterTmpFile(){
 fxPushWorkerTmpFile(){
     subjectF=$1
     worker=$2
-    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${CLUSTER_MEMBER} to $worker"
+    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${CLUSTER_MEMBER}/tmp/ to $worker/tmp/"
     lxc exec $worker -- rm -f /tmp/$subjectF
     lxc file push /tmp/$subjectF  $worker/tmp/$subjectF
 }
@@ -92,7 +92,7 @@ fxPushWorkerTmpFile(){
 fxPushClusterCbFile(){
     subjectF=$1
     cbDir=$2
-    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${HOST_NAME} to ${CLUSTER_MEMBER}/~/.cb"
+    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${SHARED_FILES_HOST}/ to ${CLUSTER_MEMBER}/~/.cb"
     lxc exec ${CLUSTER_MEMBER} -- rm -f /home/${CB_OPERATOR}/.cb/$subjectF
     lxc file push ${SHARED_FILES_HOST}/$subjectF  ${CLUSTER_MEMBER}/home/${CB_OPERATOR}/.cb/$cbDir$subjectF
 }
@@ -101,7 +101,7 @@ fxPushClusterCbFile(){
 fxPushWorkerCbFile(){
     subjectF=$1
     worker=$2
-    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${CLUSTER_MEMBER} to $worker"
+    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from /home/${CB_OPERATOR}/.cb/ to $worker/home/${CB_OPERATOR}/.cb/"
     lxc exec $worker -- rm -f /home/${CB_OPERATOR}/.cb/$subjectF
     lxc file push /home/${CB_OPERATOR}/.cb/$subjectF  $worker/home/${CB_OPERATOR}/.cb/$subjectF
 }
