@@ -52,6 +52,8 @@ do
     cmdPushWorkerFilesCb='
         source ${FX_DIR}
         fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/.cb/ directory"
+        echo "contents of ${CLUSTER_MEMBER}/home/${CB_OPERATOR}/.cb:"
+        ls -la /home/${CB_OPERATOR}/.cb
         fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}
         fxPushWorkerCbFile "init_cluster.js"  ${CURRENT_INSTANCE}              
         fxPushWorkerCbFile "build_cluster.js" ${CURRENT_INSTANCE}' 
