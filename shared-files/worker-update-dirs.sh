@@ -65,7 +65,7 @@ cmdGit='
 
 cmdMkCbDir='
     source ${FX_DIR}
-    fxSubHeader "Create .cb directory at ${CLUSTER_MEMBER}"
+    fxSubHeader "Create .cb directory at ${CURRENT_INSTANCE}"
     fxMkDir /home/devops/.cb'
 
 # concatenate required commands

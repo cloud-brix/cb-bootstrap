@@ -50,6 +50,7 @@ cmdPushClusterFilesCb='
     fxPushClusterCbFile "fx.sh"                                  ""
     fxPushClusterCbFile "cluster-init-user.sh"                   "" 
     fxPushClusterCbFile "p"                                      ""
+    fxPushClusterCbFile "worker-update-dirs.sh"                  ""
     fxPushClusterCbFile "cluster-update-worker-mf.sh"            ""
     fxPushClusterCbFile "cluster-update-worker-nodejs.sh"        ""
     fxPushClusterCbFile "cluster-update-worker-mysql-cluster.sh" ""

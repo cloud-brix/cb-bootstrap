@@ -43,11 +43,12 @@ do
     cmdPushWorkerFilesTmp='
         source ${FX_DIR}
         fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/tmp/ directory"
-        fxPushWorkerTmpFile "fx.sh"               ${CURRENT_INSTANCE}
-        fxPushWorkerTmpFile "pre-init-user.sh"    ${CURRENT_INSTANCE}              
-        fxPushWorkerTmpFile "worker-init-user.sh" ${CURRENT_INSTANCE}
-        fxPushWorkerTmpFile "installer-mysql.sh"  ${CURRENT_INSTANCE}   
-        fxPushWorkerTmpFile "p"                   ${CURRENT_INSTANCE}' 
+        fxPushWorkerTmpFile "fx.sh"                 ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "pre-init-user.sh"      ${CURRENT_INSTANCE}              
+        fxPushWorkerTmpFile "worker-init-user.sh"   ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "worker-update-dirs.sh" ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "installer-mysql.sh"    ${CURRENT_INSTANCE}   
+        fxPushWorkerTmpFile "p"                     ${CURRENT_INSTANCE}' 
 
     cmdInitWorker='
         source ${FX_DIR}
