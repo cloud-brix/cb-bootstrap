@@ -193,6 +193,7 @@ fxAddOperator(){
         cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
         sed -i -E 's/#?PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         systemctl restart ssh
+        mkdir /home/$user/.cb
     fi
 }
 
