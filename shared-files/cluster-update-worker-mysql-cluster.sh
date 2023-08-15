@@ -75,7 +75,7 @@ do
         # note that post installations are done on one machine only' 
 
     # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;"
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;$cmdInstallations"
     # run commands
     bash -c "$cmdW"
 
