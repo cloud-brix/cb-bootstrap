@@ -64,9 +64,9 @@ cmdClusterMemberResetPerm='
 cmdLaunchWorkers='
     source ${FX_DIR}
     fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
-    fxExecClusterCbFile "cluster-update-worker-mf.sh"
-    fxExecClusterCbFile "cluster-update-worker-nodejs.sh"
-    fxExecClusterCbFile "cluster-update-worker-mysql-cluster.sh"'
+    fxExecClusterCbFile "cluster-update-worker-mysql-cluster.sh"
+    # fxExecClusterCbFile "cluster-update-worker-nodejs.sh"
+    # fxExecClusterCbFile "cluster-update-worker-mf.sh"'
 
 # update host file for cluster members
     

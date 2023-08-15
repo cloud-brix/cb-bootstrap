@@ -57,7 +57,7 @@ fxRmClusterMemberTmpFile(){
     lxc exec ${CLUSTER_MEMBER} -- rm -f /tmp/$subjectF
 }
 
-
+# push files from host physical machine to cluster member
 # subjectF=subject file
 # src=source directory
 # Example:
@@ -69,6 +69,15 @@ fxPushClusterTmpFile(){
     echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${HOST_NAME} to ${CLUSTER_MEMBER}"
     lxc exec ${CLUSTER_MEMBER} -- rm -f /tmp/$subjectF
     lxc file push ${SHARED_FILES_HOST}/$subjectF  ${CLUSTER_MEMBER}/tmp/$subjectF
+}
+
+#push from cluster member to worker
+fxPushWorkerTmpFile(){
+    subjectF=$1
+    worker=$2
+    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${CLUSTER_MEMBER} to $worker"
+    lxc exec $worker -- rm -f /tmp/$subjectF
+    lxc file push /tmp/$subjectF  $worker/tmp/$subjectF
 }
 
 # subjectF=subject file
@@ -88,6 +97,15 @@ fxPushClusterCbFile(){
     lxc file push ${SHARED_FILES_HOST}/$subjectF  ${CLUSTER_MEMBER}/home/${CB_OPERATOR}/.cb/$cbDir$subjectF
 }
 
+#push from cluster member to worker
+fxPushWorkerCbFile(){
+    subjectF=$1
+    worker=$2
+    echo "--------$(hostname)/${EXEC_FILE}: pushing $subjectF from ${CLUSTER_MEMBER} to $worker"
+    lxc exec $worker -- rm -f /home/${CB_OPERATOR}/.cb/$subjectF
+    lxc file push /home/${CB_OPERATOR}/.cb/$subjectF  $worker/home/${CB_OPERATOR}/.cb/$subjectF
+}
+
 
 # subjectF=subject file
 # # clusterMember=cluster member
@@ -99,17 +117,41 @@ fxExecClusterTmpFile(){
     lxc exec ${CLUSTER_MEMBER} -- sh /tmp/$subjectF
 }
 
+# execute files in worker /tmp/ directory
+fxExecWorkerTmpFile(){
+    subjectF=$1
+    worker=$2
+    echo "--------$(hostname)/${EXEC_FILE}: exectuting $subjectF at $worker/tmp/"
+    lxc exec $worker -- sh /tmp/$subjectF
+}
+
 # subjectF=subject file
 # # clusterMember=cluster member
 # Example:
 # lxc exec ${CLUSTER_MEMBER} -- sh /tmp/cluster-init-user.sh
 fxExecClusterCbFile(){
     subjectF=$1
-    echo "--------$(hostname)/${EXEC_FILE}: exectuting $subjectF at ${CLUSTER_MEMBER}"
+    echo "--------$(hostname)/${EXEC_FILE}: exectuting $subjectF at ${CLUSTER_MEMBER}/.cb"
     lxc exec ${CLUSTER_MEMBER} -- sh /home/${CB_OPERATOR}/.cb/$subjectF
 }
 
+# execute files in worker ~/.cb directory
+fxExecWorkerCbFile(){
+    subjectF=$1
+    worker=$2
+    echo "--------$(hostname)/${EXEC_FILE}: exectuting $subjectF at $worker/.cb"
+    lxc exec $worker -- sh /home/${CB_OPERATOR}/.cb/$subjectF
+}
 
+fxExecMysqlShFile(){
+    subjectF=$1
+    worker=$2
+    echo "--------$(hostname)/${EXEC_FILE}: exectuting mysql shell file $subjectF at $worker/.cb"
+    lxc exec $worker -- mysqlsh --file /home/${CB_OPERATOR}/.cb/$subjectF
+}
+
+
+# reset permissions
 # Example:
 # lxc exec ${CLUSTER_MEMBER} -- chown -R ${CB_OPERATOR}:${CB_OPERATOR} /home/${CB_OPERATOR}/
 # lxc exec ${CLUSTER_MEMBER} -- chmod -R 775 /home/${CB_OPERATOR}/
