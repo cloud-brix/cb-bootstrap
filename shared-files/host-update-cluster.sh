@@ -27,7 +27,8 @@ cmdGit='
 cmdPushClusterFilesTmp='
     source ${FX_DIR}
     fxSubHeader "Move cb files to /tmp/ directory at ${CLUSTER_MEMBER}"
-    fxPushClusterTmpFile "fx.sh"                
+    fxPushClusterTmpFile "fx.sh"
+    fxPushClusterTmpFile "worker-update-dirs.sh"                 
     fxPushClusterTmpFile "worker-init-user.sh"  
     fxPushClusterTmpFile "cluster-init-user.sh" 
     fxPushClusterTmpFile "pre-init-user.sh"     
@@ -50,7 +51,6 @@ cmdPushClusterFilesCb='
     fxPushClusterCbFile "fx.sh"                                  ""
     fxPushClusterCbFile "cluster-init-user.sh"                   "" 
     fxPushClusterCbFile "p"                                      ""
-    fxPushClusterCbFile "worker-update-dirs.sh"                  ""
     fxPushClusterCbFile "cluster-update-worker-mf.sh"            ""
     fxPushClusterCbFile "cluster-update-worker-nodejs.sh"        ""
     fxPushClusterCbFile "cluster-update-worker-mysql-cluster.sh" ""
