@@ -36,3 +36,9 @@ sudo -E apt-get install mysql-server mysql-client mysql-shell --assume-yes --for
 
 # ISSUE:
 # W: --force-yes is deprecated, use one of the options starting with --allow instead.
+
+# allow remote connection:
+# sed -i '/bind-address/c\bind-address = 0.0.0.0' /etc/mysql/mysql.conf.d/mysqld.cnf
+# sed -i -E "s/#?bind-address = 127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo systemctl restart mysql
+

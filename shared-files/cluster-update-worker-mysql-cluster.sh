@@ -10,7 +10,7 @@ export SHARED_FILES_HOST="/home/${HOST_USER}/cb-bootstrap/shared-files"
 export SHARED_FILES_CLUSTER_MEMBER="/home/${CB_OPERATOR}/cb-bootstrap/shared-files"
 export P_SECR=`cat /tmp/p`
 export FX_DIR="/tmp/fx.sh"
-export APP_NAME="cd-api-0"
+export APP_NAME="cd-db-0"
 
 cmdHead='
     source ${FX_DIR}
@@ -65,8 +65,6 @@ do
         fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}
         fxPushWorkerCbFile "init_cluster.js"  ${CURRENT_INSTANCE}              
         fxPushWorkerCbFile "build_cluster.js" ${CURRENT_INSTANCE}' 
-
-    
 
     cmdInstallations='
         source ${FX_DIR}
