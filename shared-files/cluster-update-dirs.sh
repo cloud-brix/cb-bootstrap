@@ -61,7 +61,7 @@ cmdHead='
 cmdGit='
     source ${FX_DIR}
     fxSubHeader "Update files from Git"
-    fxGit "cb-bootstrap" "https://github.com/cloud-brix/cb-bootstrap.git" ${HOST_USER}'
+    fxGit "cb-bootstrap" "https://github.com/cloud-brix/cb-bootstrap.git" ${CLUSTER_MEMBER}'
 
 cmdMkCbDir='
     source ${FX_DIR}

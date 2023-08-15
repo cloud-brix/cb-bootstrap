@@ -33,7 +33,9 @@ cmdPushClusterFilesTmp='
     fxPushClusterTmpFile "pre-init-user.sh"     
     fxPushClusterTmpFile "ssh-key.sh"           
     fxPushClusterTmpFile "ssh-copy-id.sh"       
-    fxPushClusterTmpFile "p"'
+    fxPushClusterTmpFile "p"
+    fxPushClusterTmpFile "installer-mysql.sh"
+    fxPushClusterTmpFile "installer-nodejs.sh"'
 
 # execute init-user in cluster member
 cmdInitClusterUser='
@@ -45,13 +47,15 @@ cmdInitClusterUser='
 cmdPushClusterFilesCb='
     source ${FX_DIR}
     fxSubHeader "PUSH POST-INITIAL FILES TO ${CLUSTER_MEMBER}/home/${CB_OPERATOR}/.cb/ DIRECTORY"
-    fxPushClusterCbFile "cluster-init-user.sh"          "" 
-    fxPushClusterCbFile "p"                             ""
-    fxPushClusterCbFile "cluster-update-worker-mf.sh"      ""
-    fxPushClusterCbFile "cluster-update-worker-nodejs.sh"      ""
-    fxPushClusterCbFile "cluster-update-worker-mysql-cluster.sh"      ""
-    fxPushClusterCbFile "cluster-update-dirs.sh"        ""
-    fxPushClusterCbFile "init_cluster.js"               ""'
+    fxPushClusterCbFile "fx.sh"                                  ""
+    fxPushClusterCbFile "cluster-init-user.sh"                   "" 
+    fxPushClusterCbFile "p"                                      ""
+    fxPushClusterCbFile "cluster-update-worker-mf.sh"            ""
+    fxPushClusterCbFile "cluster-update-worker-nodejs.sh"        ""
+    fxPushClusterCbFile "cluster-update-worker-mysql-cluster.sh" ""
+    fxPushClusterCbFile "cluster-update-dirs.sh"                 ""
+    fxPushClusterCbFile "init_cluster.js"                        ""
+    fxPushClusterCbFile "build_cluster.js"                       ""'
 
 # reset permissions for operator in the cluster member   
 cmdClusterMemberResetPerm='
