@@ -162,7 +162,7 @@ do
 
 
     # concatenate required commands
-    cmdW="$cmdGit;$cmdInitApp"
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdGit;$cmdInitApp"
     # run commands
     bash -c "$cmdW"
 

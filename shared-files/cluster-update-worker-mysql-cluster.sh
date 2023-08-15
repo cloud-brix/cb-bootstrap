@@ -59,7 +59,7 @@ do
 
     cmdPushWorkerFilesCb='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/.cb/ directory"
+        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb/ directory"
         echo "contents of ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb:"
         lxc exec ${CURRENT_INSTANCE} -- ls -la /home/${CB_OPERATOR}/.cb
         fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}
@@ -75,7 +75,7 @@ do
         # note that post installations are done on one machine only' 
 
     # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdPushWorkerFilesCb;$cmdInitWorker"
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;"
     # run commands
     bash -c "$cmdW"
 
