@@ -68,8 +68,14 @@ do
 
     cmdInstallations='
         source ${FX_DIR}
-        fxSubHeader "${CURRENT_INSTANCE}: Install mysql"
-        fxExecWorkerTmpFile "installer-mysql.sh"     ${CURRENT_INSTANCE}
+        if [dpkg --get-selections | grep mysql]
+        then
+            fxSubHeader "${CURRENT_INSTANCE}: mysql already installed"
+        else
+            fxSubHeader "${CURRENT_INSTANCE}: Install mysql"
+            fxExecWorkerTmpFile "installer-mysql.sh"     ${CURRENT_INSTANCE}
+        fi
+        
         # note that post installations are done on one machine only' 
 
     # concatenate required commands
