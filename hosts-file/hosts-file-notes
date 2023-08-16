@@ -1,0 +1,46 @@
+#! /bin/bash
+
+# update ip for a given hostname
+# IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+# HOST="peep.strudel.com"
+ip=$1
+hostname=$2
+sed -i "/$hostname/ s/.*/$ip\t$hostname/g" /etc/hosts
+
+#----------------------------------------------------------------------------
+
+# append line to hosts file:
+ip=$1
+hostname=$2
+sed -i "1i$ip  $hostname" /etc/hosts
+
+# --------------------------------------------------------------------------
+# check if string exists in a file
+neddle=$1
+haystack=$2
+if grep -wq "$neddle," $haystack; then 
+    echo "host exists, will be updated" 
+else 
+    echo "host does not exist, will be added as new"
+fi
+
+# -------------------------------------------------------------------------
+# combine the above to add/append host to hosts file only if it does not exits, 
+# otherwis update exitsting records
+ip=$1
+hostname=$2
+hostsFile="/etc/hosts"
+neddle=$hostname
+haystack=$hostsFile
+if grep -wq "$neddle," $haystack; then 
+    echo "host exists, will be updated" 
+    sed -i "/$hostname/ s/.*/$ip\t$hostname/g" /etc/hosts
+else 
+    echo "host does not exist, will be added as new"
+    sed -i "1i$ip  $hostname" /etc/hosts
+fi
+
+# ---------------------------------------------------------------------------
+# 
+# https://gist.github.com/mtthlm/8847025
+#--------------------------------------------------------------------------

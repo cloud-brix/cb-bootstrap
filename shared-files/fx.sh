@@ -143,14 +143,6 @@ fxExecWorkerCbFile(){
     lxc exec $worker -- sh /home/${CB_OPERATOR}/.cb/$subjectF
 }
 
-fxExecMysqlShFile(){
-    subjectF=$1
-    worker=$2
-    echo "--------$(hostname)/${EXEC_FILE}: exectuting mysql shell file $subjectF at $worker/.cb"
-    lxc exec $worker -- mysqlsh --file /home/${CB_OPERATOR}/.cb/$subjectF
-}
-
-
 # reset permissions
 # Example:
 # lxc exec ${CLUSTER_MEMBER} -- chown -R ${CB_OPERATOR}:${CB_OPERATOR} /home/${CB_OPERATOR}/
@@ -227,6 +219,74 @@ fxMkDir(){
     fi
 }
 
+fxSetHosts(){
+    ############################################################################
+    # set up host file
+    # hosts setup
+    cp /etc/hosts /etc/hosts.bak
+    cat > /etc/hosts <<EOF                                                                                       
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+
+192.168.0.9  emp-09
+192.168.0.10 emp-10
+192.168.0.11 emp-11
+
+192.168.0.90 cb.ha
+192.168.0.91 routed-91
+192.168.0.92 routed-92
+192.168.0.93 routed-93
+192.168.0.94 routed-94
+192.168.0.95 routed-95
+192.168.0.96 routed-96
+192.168.0.97 routed-97
+
+192.168.0.101 routed-101
+192.168.0.102 routed-102
+192.168.0.103 routed-103
+192.168.0.104 routed-104
+192.168.0.105 routed-105
+192.168.0.106 routed-106
+192.168.0.107 routed-107
+
+192.168.0.111 routed-111
+192.168.0.112 routed-112
+192.168.0.113 routed-113
+192.168.0.114 routed-114
+192.168.0.115 routed-115
+192.168.0.116 routed-116
+192.168.0.117 routed-117
+
+# cd-db mysql cluster
+240.93.0.172   cd-db-01
+240.103.0.64   cd-db-02
+240.113.0.252  cd-db-03
+
+# cd-api node.js cluster
+240.94.0.219   cd-api-01
+240.104.0.188  cd-api-02
+240.114.0.95   cd-api-03
+
+# cd-push server
+240.95.0.180   cd-sio-01
+
+# cd-mf module federation
+240.105.0.27   cd-shell-01
+240.115.0.235  cd-user-01
+240.93.0.46    cd-moduleman-01
+240.103.0.83   cd-comm-01
+240.113.0.134  cd-pub-01
+
+EOF
+}
+
 
 
 # -------------------------------------------------------------------------------------------------------
@@ -238,6 +298,13 @@ fxInstalMysql(){
     # do unattended mysql installation
     # do unattended mysql-shell installation
     echo ""
+}
+
+fxExecMysqlShFile(){
+    subjectF=$1
+    worker=$2
+    echo "--------$(hostname)/${EXEC_FILE}: exectuting mysql shell file $subjectF at $worker/.cb"
+    lxc exec $worker -- mysqlsh --file /home/${CB_OPERATOR}/.cb/$subjectF
 }
 
 fxCreateMysqlCluster(){

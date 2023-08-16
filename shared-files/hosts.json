@@ -1,0 +1,749 @@
+{
+    "files": {
+        "hostData": "hosts.json",
+        "configInventorySh": "config_inventory.sh",
+        "configHostsSh": "config_hosts.sh",
+        "configSshSh": "config_ssh.sh",
+        "sshConfigFile": "config",
+        "configVagrantSh": "config_vagrant.sh",
+        "hostInventory": "inventory.ini"
+    },
+    "groups": [
+        {
+            "name": "vm-host",
+            "is_active": true
+        },
+        {
+            "name": "vm",
+            "is_active": true
+        },
+        {
+            "name": "lxd-cluster-member",
+            "is_active": true
+        },
+        {
+            "name": "lxd-cluster-worker",
+            "is_active": true
+        },
+        {
+            "name": "physical-machine",
+            "is_active": true
+        },
+        {
+            "name": "vrrp",
+            "is_active": true
+        },
+        {
+            "name": "db",
+            "is_active": true
+        },
+        {
+            "name": "api",
+            "is_active": true
+        },
+        {
+            "name": "mf",
+            "is_active": true
+        },
+        {
+            "name": "fs",
+            "is_active": true
+        },
+        {
+            "name": "cache",
+            "is_active": true
+        }
+    ],
+    "zones": [
+        {
+            "name": "9",
+            "members": []
+        },
+        {
+            "name": "10",
+            "members": []
+        },
+        {
+            "name": "11",
+            "members": []
+        }
+    ],
+    "hosts": [
+        {
+            "host_name": "emp-09",
+            "ip": "192.168.0.9",
+            "is_vm_host": true,
+            "is_vm": false,
+            "is_lxd": false,
+            "is_active": true,
+            "lxd-parent": null,
+            "children":[
+                {"name":"routed-93"},
+                {"name":"routed-94"},
+                {"name":"routed-95"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "vrrp-cd",
+                    "ingress": "vrrp-cd"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "vm-host"
+                },
+                {
+                    "name": "physical-machine"
+                }
+            ]
+        },
+        {
+            "host_name": "emp-10",
+            "ip": "192.168.0.10",
+            "is_vm_host": true,
+            "is_vm": false,
+            "is_lxd": false,
+            "is_active": true,
+            "lxd-parent": null,
+            "children":[
+                {"name":"routed-103"},
+                {"name":"routed-104"},
+                {"name":"routed-105"}
+            ],
+            "cd_apps": [],
+            "group_parents": [
+                {
+                    "name": "vm-host"
+                },
+                {
+                    "name": "physical-machine"
+                }
+            ]
+        },
+        {
+            "host_name": "emp-11",
+            "ip": "192.168.0.11",
+            "is_vm_host": true,
+            "is_vm": false,
+            "is_lxd": false,
+            "is_active": true,
+            "lxd-parent": null,
+            "children":[
+                {"name":"routed-113"},
+                {"name":"routed-114"},
+                {"name":"routed-115"}
+            ],
+            "cd_apps": [],
+            "group_parents": [
+                {
+                    "name": "vm-host"
+                },
+                {
+                    "name": "physical-machine"
+                }
+            ],
+            "ports": null
+        },
+        {
+            "host_name": "routed-91",
+            "ip": "192.168.0.91",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": false,
+            "lxd-parent": "emp-09",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "keepalived"
+                },
+                {
+                    "name": "haproxy"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "vrrp"
+                }
+            ],
+            "ports": 80
+        },
+        {
+            "host_name": "routed-92",
+            "ip": "192.168.0.92",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": false,
+            "lxd-parent": "emp-09",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "apache"
+                },
+                {
+                    "name": "nginx"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "webserver"
+                }
+            ],
+            "ports": 80
+        },
+        {
+            "host_name": "routed-93",
+            "ip": "192.168.0.93",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-09",
+            "children":[
+                {"name":"cd-db-01"},
+                {"name":"cd-moduleman-01"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-94",
+            "ip": "192.168.0.94",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-09",
+            "children":[
+                {"name":"cd-api-01"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-api",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-95",
+            "ip": "192.168.0.95",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-09",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-push"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ],
+            "ports": 3306
+        },
+        {
+            "host_name": "routed-103",
+            "ip": "192.168.0.103",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-10",
+            "children":[
+                {"name":"cd-db-02"},
+                {"name":"cd-comm-01"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-104",
+            "ip": "192.168.0.104",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-10",
+            "children":[
+                {"name":"cd-api-02"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-105",
+            "ip": "192.168.0.105",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-10",
+            "children":[
+                {"name":"cd-shell-01"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-113",
+            "ip": "192.168.0.113",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-11",
+            "children":[
+                {"name":"cd-db-03"},
+                {"name":"cd-pub-01"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-114",
+            "ip": "192.168.0.114",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-11",
+            "children":[
+                {"name":"cd-api-03"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "routed-115",
+            "ip": "192.168.0.115",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "emp-11",
+            "children":[
+                {"name":"cd-user-01"}
+            ],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-member"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-db-01",
+            "ip": "240.93.0.172",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-93",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-db-02",
+            "ip": "240.103.0.64",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-103",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-db-02",
+            "ip": "240.103.0.64",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-103",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-db-03",
+            "ip": "240.113.0.252",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-113",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-db",
+                    "port": "3306"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-api-01",
+            "ip": "240.94.0.219",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-94",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-api",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-api-02",
+            "ip": "240.104.0.188",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-104",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-api",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-api-03",
+            "ip": "240.114.0.95",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-114",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-api",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-comm-01",
+            "ip": "240.103.0.83",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-103",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-comm",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-moduleman-01",
+            "ip": "240.93.0.46",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-93",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-moduleman",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-pub-01",
+            "ip": "240.113.0.134",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-113",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-pub",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-shell-01",
+            "ip": "240.105.0.27",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-105",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-shell",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-sio-01",
+            "ip": "240.95.0.180",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-95",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-sio",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        },
+        {
+            "host_name": "cd-user-01",
+            "ip": "240.115.0.235",
+            "is_vm_host": false,
+            "is_vm": false,
+            "is_lxd": true,
+            "is_active": true,
+            "lxd-parent": "routed-115",
+            "children":[],
+            "cd_apps": [
+                {
+                    "name": "cd-sio",
+                    "port": "3000"
+                }
+            ],
+            "group_parents": [
+                {
+                    "name": "lxd"
+                },
+                {
+                    "name": "lxd-cluster-worker"
+                }
+            ]
+        }
+    ]
+}

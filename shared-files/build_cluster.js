@@ -20,23 +20,17 @@ const key = { password: dbPass };
 
 
 // const dbHosts = [
-//     "192.168.1.171",
-//     "192.168.1.172",
-//     "192.168.1.173",
-//     "192.168.1.174",
-//     "192.168.1.175"
+//     "240.93.0.172",
+//     "240.103.0.64",
+//     "240.113.0.252"
 // ];
 
 const dbHosts = [
-    "240.93.0.172",
-    "240.94.0.155",
-    "240.95.0.221"
+    "cd-db-01",
+    "cd-db-02",
+    "cd-db-03"
 ];
 
-// for (let i = 1; i <= numNodes; i++) {
-//     var hostName = shell.prompt('Please enter the hostname for node' + i + ': ');
-//     dbHosts.push(hostName);
-// }
 
 function sleep(milliseconds) {
     const date = Date.now();

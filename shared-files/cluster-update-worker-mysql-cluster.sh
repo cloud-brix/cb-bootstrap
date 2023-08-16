@@ -86,7 +86,9 @@ cmdMysqlCluster='
         source ${FX_DIR}
         fxSubHeader "Setup mysql cluster"          
         # fxExecMysqlShFile "init_cluster.js" ${APP_NAME}1
-        # fxExecMysqlShFile "build_cluster.js" ${APP_NAME}$1' 
+        # sleep 10
+        # fxExecMysqlShFile "build_cluster.js" ${APP_NAME}$1
+        # sleep 10' 
 
 # 2. Restore data
 cmdRestoreData='

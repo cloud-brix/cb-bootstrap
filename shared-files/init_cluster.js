@@ -39,24 +39,9 @@ try {
             print(chk.config_errors.length);
             print("try-05")
             const sess = mysql.getClassicSession(server, dbPass);
-            // var chk2 = dba.configureInstance(server, {password:dbPass, interactive: false,restart: true})
-            // sleep(5000); // source: https://www.sitepoint.com/delay-sleep-pause-wait/
-            // print(`chk2:${chk2}`)
             print("try-06")
             shell.setSession(sess);
             print("try-07")
-            // chk.config_errors.forEach((item, i) => {
-            //     print(`forEachloop-${i}`)
-            //     const action = item.action;
-            //     const current = item.current;
-            //     const option = item.option;
-            //     const required = item.required;
-            //     print(`Trying to correct the config: ${option}`)
-            //     var resultSet = sess.runSql(`SET PERSIST ${option} = '${required}';`);
-            //     var row = resultSet.fetchOneObject();
-            //     print("resultSet:")
-            //     print(row);
-            // });
 
             for (i = 0; i < chk.config_errors.length; i++) {
                 // console.log(numbers[i]);
