@@ -68,6 +68,8 @@ do
 
     cmdInstallations='
         source ${FX_DIR}
+        # script below not working
+        # should run install_mysql.sh only if mysql is not installed
         PKG_OK=$(dpkg --get-selections | grep mysql)
         if ["" = "$PKG_OK"]
         then
@@ -92,10 +94,10 @@ done
 cmdMysqlCluster='
         source ${FX_DIR}
         fxSubHeader "Setup mysql cluster"          
-        # fxExecMysqlShFile "init_cluster.js" ${APP_NAME}1
-        # sleep 10
-        # fxExecMysqlShFile "build_cluster.js" ${APP_NAME}$1
-        # sleep 10' 
+        fxExecMysqlShFile "init_cluster.js" ${APP_NAME}1
+        sleep 10
+        fxExecMysqlShFile "build_cluster.js" ${APP_NAME}$1
+        sleep 10' 
 
 # 2. Restore data
 cmdRestoreData='
