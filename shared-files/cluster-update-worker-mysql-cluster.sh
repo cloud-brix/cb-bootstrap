@@ -68,12 +68,13 @@ do
 
     cmdInstallations='
         source ${FX_DIR}
-        if [dpkg --get-selections | grep mysql]
+        PKG_OK=$(dpkg --get-selections | grep mysql)
+        if ["" = "$PKG_OK"]
         then
-            fxSubHeader "${CURRENT_INSTANCE}: mysql already installed"
-        else
             fxSubHeader "${CURRENT_INSTANCE}: Install mysql"
             fxExecWorkerTmpFile "installer-mysql.sh"     ${CURRENT_INSTANCE}
+        else
+            fxSubHeader "${CURRENT_INSTANCE}: mysql already installed"
         fi
         
         # note that post installations are done on one machine only' 
