@@ -42,22 +42,30 @@ while [ "$i" -lt $count ]
 do
     j=$(($i + 1))
 
+    export CURRENT_INSTANCE="${APP_NAME}$j"
+
     cmdPushWorkerFilesTmp='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to ${APP_NAME}$j/tmp/ directory"
-        fxPushWorkerTmpFile "fx.sh"               ${APP_NAME}$j
-        fxPushWorkerTmpFile "pre-init-user.sh"    ${APP_NAME}$j              
-        fxPushWorkerTmpFile "worker-init-user.sh" ${APP_NAME}$j
-        fxPushWorkerTmpFile "installer-nodejs.sh"  ${APP_NAME}$j'
+        fxSubHeader "${CURRENT_INSTANCE}: Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/tmp/ directory"
+        fxPushWorkerTmpFile "fx.sh"                 ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "pre-init-user.sh"      ${CURRENT_INSTANCE}              
+        fxPushWorkerTmpFile "worker-init-user.sh"   ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "worker-update-dirs.sh" ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "installer-nodejs.sh"   ${CURRENT_INSTANCE}' 
 
     cmdInitWorker='
         source ${FX_DIR}
-        fxSubHeader "Initialize worker node"
-        fxExecWorkerTmpFile "pre-init-user.sh"     ${APP_NAME}$j
-        fxExecWorkerTmpFile "worker-init-user.sh"  ${APP_NAME}$j
-        fxExecWorkerTmpFile "installer-nodejs.sh"  ${APP_NAME}$j'
+        fxSubHeader "${CURRENT_INSTANCE}:Initialize worker node"
+        fxExecWorkerTmpFile "pre-init-user.sh"       ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-init-user.sh"    ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-update-dirs.sh"  ${CURRENT_INSTANCE}' 
 
-
+    cmdPushWorkerFilesCb='
+        source ${FX_DIR}
+        fxSubHeader "${CURRENT_INSTANCE}: Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb/ directory"
+        echo "contents of ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb in ${CURRENT_INSTANCE}:"
+        lxc exec ${CURRENT_INSTANCE} -- ls -la /home/${CB_OPERATOR}/.cb
+        fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}' 
 
     # clone or update files
     cmdGit='
@@ -68,16 +76,18 @@ do
 
 
     cmdInitApp='
+        fxSubHeader "starting cd-sio"
         cd /home/${CB_OPERATOR}/cd-sio/
         npm insall
         npm start
+        fxSubHeader "starting cd-api"
         cd /home/${CB_OPERATOR}/cd-api/
         npm insall
         npm start' 
 
 
     # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdGit;$cmdInitApp"
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;$cmdGit;$cmdInitApp"
     # run commands
     bash -c "$cmdW"
 
