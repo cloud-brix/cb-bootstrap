@@ -47,31 +47,31 @@ do
 
     cmdPushWorkerFilesTmp='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to $proj/tmp/ directory"
-        fxPushWorkerTmpFile "fx.sh"               ${CURRENT_INSTANCE}
-        fxPushWorkerTmpFile "pre-init-user.sh"    ${CURRENT_INSTANCE}            
-        fxPushWorkerTmpFile "worker-init-user.sh" ${CURRENT_INSTANCE}
-        fxPushWorkerTmpFile "installer-nodejs.sh"  ${CURRENT_INSTANCE}'
+        fxSubHeader "${CURRENT_INSTANCE}: Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/tmp/ directory"
+        fxPushWorkerTmpFile "fx.sh"                 ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "pre-init-user.sh"      ${CURRENT_INSTANCE}              
+        fxPushWorkerTmpFile "worker-init-user.sh"   ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "worker-update-dirs.sh" ${CURRENT_INSTANCE}  
+        fxPushWorkerTmpFile "p"                     ${CURRENT_INSTANCE}' 
 
     cmdInitWorker='
         source ${FX_DIR}
-        fxSubHeader "Initialize worker node"
+        fxSubHeader "${CURRENT_INSTANCE}:Initialize worker node"
         fxExecWorkerTmpFile "pre-init-user.sh"       ${CURRENT_INSTANCE}
         fxExecWorkerTmpFile "worker-init-user.sh"    ${CURRENT_INSTANCE}
-        # fxExecWorkerTmpFile "installer-nodejs.sh"  ${CURRENT_INSTANCE}'
+        fxExecWorkerTmpFile "worker-update-dirs.sh"  ${CURRENT_INSTANCE}' 
 
-    # clone or update files
-    # cmdGit='
-    #     source ${FX_DIR}
-    #     fxSubHeader "get latest cd-api files from repository"
-    #     fxGit "$proj" "https://github.com/corpdesk/$proj.git" ${CB_OPERATOR}'
+    cmdPushWorkerFilesCb='
+        source ${FX_DIR}
+        fxSubHeader "${CURRENT_INSTANCE}: Move cb files from ${CLUSTER_MEMBER} to ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb/ directory"
+        echo "contents of ${CURRENT_INSTANCE}/home/${CB_OPERATOR}/.cb in ${CURRENT_INSTANCE}:"
+        lxc exec ${CURRENT_INSTANCE} -- ls -la /home/${CB_OPERATOR}/.cb
+        fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}' 
 
-
-    # cmdInitApp='
-    #     cd /home/${CB_OPERATOR}/$proj/
-    #     npm insall
-    #     npm start' 
-
+    # concatenate required commands
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb"
+    # run commands
+    bash -c "$cmdW"
     # -----------------------------------------------------------------------------------
 
     sudo -H -u devops bash -c '
@@ -107,10 +107,7 @@ do
     npm install --legacy-peer-deps
     npm start'
 
-    # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;"
-    # run commands
-    bash -c "$cmdW"
+    
 
     i=$(($proj + 1))
 done
