@@ -1,3 +1,6 @@
+
+# lxc exec <instance_name> -- su --login <user_name>
+
 sudo -H -u devops bash -c '
 echo "--------changing to home"
 cd /home/devops
