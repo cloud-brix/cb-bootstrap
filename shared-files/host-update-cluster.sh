@@ -68,10 +68,13 @@ cmdClusterMemberResetPerm='
 # containers would be for specific project eg db containers for given projects
 cmdLaunchWorkers='
     source ${FX_DIR}
-    fxSubHeader "Execute ${EXEC_FILE} at ${CLUSTER_MEMBER}"
+    fxSubHeader "Execute cluster-update-worker-mysql-cluster.sh at ${CLUSTER_MEMBER}"
     fxExecClusterCbFile "cluster-update-worker-mysql-cluster.sh"
-    # fxExecClusterCbFile "cluster-update-worker-nodejs.sh"
+    fxSubHeader "Execute cluster-update-worker-nodejs.sh at ${CLUSTER_MEMBER}"
+    fxExecClusterCbFile "cluster-update-worker-nodejs.sh"
+    fxSubHeader "Execute cluster-update-worker-mf.sh at ${CLUSTER_MEMBER}"
     # fxExecClusterCbFile "cluster-update-worker-mf.sh"
+    fxSubHeader "updating host files"
     # fxSetHosts hosts-lists'
 
 # update host file for cluster members
