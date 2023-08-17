@@ -67,6 +67,11 @@ do
         lxc exec ${CURRENT_INSTANCE} -- ls -la /home/${CB_OPERATOR}/.cb
         fxPushWorkerCbFile "fx.sh"            ${CURRENT_INSTANCE}' 
 
+    cmdInstallNodejs='
+        source ${FX_DIR}
+        fxSubHeader "Install nvm/node.js and npm"          
+        fxExecWorkerTmpFile "installer-nodejs.sh"       ${CURRENT_INSTANCE}' 
+
     # clone or update files
     cmdGit='
         source ${FX_DIR}
@@ -87,7 +92,7 @@ do
 
 
     # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;$cmdGit;$cmdInitApp"
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;$cmdInstallNodejs;$cmdGit;$cmdInitApp"
     # run commands
     bash -c "$cmdW"
 
