@@ -73,11 +73,11 @@ do
         fxExecWorkerTmpFile "installer-nodejs.sh"       ${CURRENT_INSTANCE}' 
 
     # clone or update files
-    cmdGit='
-        source ${FX_DIR}
-        fxSubHeader "get latest cd-api files from repository"
-        fxGit "cd-api" "https://github.com/corpdesk/cd-api.git" ${CB_OPERATOR}
-        fxGit "cd-sio" "https://github.com/corpdesk/cd-sio.git" ${CB_OPERATOR}'
+    # cmdGit='
+    #     source ${FX_DIR}
+    #     fxSubHeader "get latest cd-api files from repository"
+    #     fxGit "cd-api" "https://github.com/corpdesk/cd-api.git" ${CB_OPERATOR}
+    #     fxGit "cd-sio" "https://github.com/corpdesk/cd-sio.git" ${CB_OPERATOR}'
 
 
     cmdInitApp='
@@ -92,9 +92,40 @@ do
 
 
     # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;$cmdInstallNodejs;$cmdGit;$cmdInitApp"
+    cmdW1="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdPushWorkerFilesCb;$cmdInstallNodejs;"
     # run commands
-    bash -c "$cmdW"
+    bash -c "$cmdW1"
+
+    sudo -H -u devops bash -c '
+    echo "--------changing to home"
+    cd /home/devops
+    echo "--------confirm current directory:"
+    pwd
+    echo "--------confirm current current user:"
+    whoami
+    echo "--------getting the latest cd-sio"
+    if [ -d "/home/devops/cd-sio"]
+    then
+        cd /home/devops/cd-sio
+        git pull
+    else
+        cd /home/devops/
+        git clone https://github.com/corpdesk/cd-sio.git
+    fi
+    
+    echo "--------getting the latest cd-api"
+    if [ -d "/home/devops/cd-api"]
+    then
+        cd /home/devops/cd-api
+        git pull
+    else
+        cd /home/devops/
+        git clone https://github.com/corpdesk/cd-api.git
+    fi'
+
+    cmdW2="$cmdInitApp"
+    bash -c "$cmdW2"
+    
 
     i=$(($i + 1))
 done
