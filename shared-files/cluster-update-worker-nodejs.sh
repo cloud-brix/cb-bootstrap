@@ -80,15 +80,15 @@ do
     #     fxGit "cd-sio" "https://github.com/corpdesk/cd-sio.git" ${CB_OPERATOR}'
 
 
-    cmdInitApp='
-        fxSubHeader "starting cd-sio"
-        cd /home/${CB_OPERATOR}/cd-sio/
-        npm insall
-        npm start
-        fxSubHeader "starting cd-api"
-        cd /home/${CB_OPERATOR}/cd-api/
-        npm insall
-        npm start' 
+    # cmdInitApp='
+    #     fxSubHeader "starting cd-sio"
+    #     cd /home/${CB_OPERATOR}/cd-sio/
+    #     npm insall
+    #     npm start
+    #     fxSubHeader "starting cd-api"
+    #     cd /home/${CB_OPERATOR}/cd-api/
+    #     npm insall
+    #     npm start' 
 
 
     # concatenate required commands
@@ -125,8 +125,17 @@ do
         git clone https://github.com/corpdesk/cd-api.git /home/devops/cd-api
     fi'
 
-    cmdW2="$cmdInitApp"
-    bash -c "$cmdW2"
+    sudo -H -u devops bash -c '
+    cd /home/devops/cd-sio
+    npm install
+    npm start'
+
+    sudo -H -u devops bash -c '
+    cd /home/devops/cd-api
+    npm install
+    npm start'
+
+
     
 
     i=$(($i + 1))
