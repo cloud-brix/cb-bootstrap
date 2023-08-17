@@ -97,30 +97,32 @@ do
     bash -c "$cmdW1"
 
     sudo -H -u devops bash -c '
-    echo "--------changing to home"
+    echo "--------${CURRENT_INSTANCE}: changing to home"
     cd /home/devops
-    echo "--------confirm current directory:"
+    echo "--------${CURRENT_INSTANCE}: confirm current directory:"
     pwd
-    echo "--------confirm current current user:"
+    echo "--------${CURRENT_INSTANCE}: confirm current current user:"
     whoami
-    echo "--------getting the latest cd-sio"
-    if [ -d "/home/devops/cd-sio"]
+    echo "--------${CURRENT_INSTANCE}: confirm home directory contents:"
+    ls -la /home/devops/
+    echo "--------${CURRENT_INSTANCE}: getting the latest cd-sio"
+    if [ -d "/home/devops/cd-sio" ]
     then
         cd /home/devops/cd-sio
         git pull
     else
         cd /home/devops/
-        git clone https://github.com/corpdesk/cd-sio.git
+        git clone https://github.com/corpdesk/cd-sio.git /home/devops/cd-sio
     fi
     
     echo "--------getting the latest cd-api"
-    if [ -d "/home/devops/cd-api"]
+    if [ -d "/home/devops/cd-api" ]
     then
         cd /home/devops/cd-api
         git pull
     else
         cd /home/devops/
-        git clone https://github.com/corpdesk/cd-api.git
+        git clone https://github.com/corpdesk/cd-api.git /home/devops/cd-api
     fi'
 
     cmdW2="$cmdInitApp"
