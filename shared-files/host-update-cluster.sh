@@ -73,7 +73,7 @@ cmdLaunchWorkers='
     fxSubHeader "Execute cluster-update-worker-nodejs.sh at ${CLUSTER_MEMBER}"
     fxExecClusterCbFile "cluster-update-worker-nodejs.sh"
     fxSubHeader "Execute cluster-update-worker-mf.sh at ${CLUSTER_MEMBER}"
-    # fxExecClusterCbFile "cluster-update-worker-mf.sh"
+    fxExecClusterCbFile "cluster-update-worker-mf.sh"
     fxSubHeader "updating host files"
     # fxSetHosts hosts-lists'
 
