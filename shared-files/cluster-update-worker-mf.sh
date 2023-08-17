@@ -38,43 +38,79 @@ bash -c "$cmdHead"
 # 
 # count=3
 # i=0;
-# while [ "$i" -lt $count ]
-for i in cd-shell cd-user cd-moduleman cd-comm cd-pub;
+# while [ "$proj" -lt $count ]
+for proj in cd-shell cd-user cd-moduleman cd-comm cd-pub;
 do
-    j=$(($i + 1))
+
+    export CURRENT_INSTANCE="$proj-01"
+    export PROJ=$proj
 
     cmdPushWorkerFilesTmp='
         source ${FX_DIR}
-        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to $i/tmp/ directory"
-        fxPushWorkerTmpFile "fx.sh"               $i
-        fxPushWorkerTmpFile "pre-init-user.sh"    $i              
-        fxPushWorkerTmpFile "worker-init-user.sh" $i
-        fxPushWorkerTmpFile "installer-nodejs.sh"  $i'
+        fxSubHeader "Move cb files from ${CLUSTER_MEMBER} to $proj/tmp/ directory"
+        fxPushWorkerTmpFile "fx.sh"               ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "pre-init-user.sh"    ${CURRENT_INSTANCE}            
+        fxPushWorkerTmpFile "worker-init-user.sh" ${CURRENT_INSTANCE}
+        fxPushWorkerTmpFile "installer-nodejs.sh"  ${CURRENT_INSTANCE}'
 
     cmdInitWorker='
         source ${FX_DIR}
         fxSubHeader "Initialize worker node"
-        fxExecWorkerTmpFile "pre-init-user.sh"     $i
-        fxExecWorkerTmpFile "worker-init-user.sh"  $i
-        fxExecWorkerTmpFile "installer-nodejs.sh"  $i'
+        fxExecWorkerTmpFile "pre-init-user.sh"       ${CURRENT_INSTANCE}
+        fxExecWorkerTmpFile "worker-init-user.sh"    ${CURRENT_INSTANCE}
+        # fxExecWorkerTmpFile "installer-nodejs.sh"  ${CURRENT_INSTANCE}'
 
     # clone or update files
-    cmdGit='
-        source ${FX_DIR}
-        fxSubHeader "get latest cd-api files from repository"
-        fxGit "$i" "https://github.com/corpdesk/$i.git" ${CB_OPERATOR}'
+    # cmdGit='
+    #     source ${FX_DIR}
+    #     fxSubHeader "get latest cd-api files from repository"
+    #     fxGit "$proj" "https://github.com/corpdesk/$proj.git" ${CB_OPERATOR}'
 
 
-    cmdInitApp='
-        cd /home/${CB_OPERATOR}/$i/
-        npm insall
-        npm start' 
+    # cmdInitApp='
+    #     cd /home/${CB_OPERATOR}/$proj/
+    #     npm insall
+    #     npm start' 
 
+    # -----------------------------------------------------------------------------------
+
+    sudo -H -u devops bash -c '
+    cd /home/devops/
+    echo "--------installing nvm"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+    cd /home/devops/
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+
+    sudo -H -u devops bash -c '
+    echo "--------${CURRENT_INSTANCE}: changing to home"
+    cd /home/devops
+    echo "--------${CURRENT_INSTANCE}: confirm current directory:"
+    pwd
+    echo "--------${CURRENT_INSTANCE}: confirm current current user:"
+    whoami
+    echo "--------${CURRENT_INSTANCE}: confirm home directory contents:"
+    ls -la /home/devops/
+    echo "--------${CURRENT_INSTANCE}: getting the latest ${PROJ}"
+    if [ -d "/home/devops/${PROJ}" ]
+    then
+        cd /home/devops/${PROJ}
+        git pull
+    else
+        cd /home/devops/
+        git clone https://github.com/corpdesk/${PROJ}.git /home/devops/${PROJ}
+    fi'
+    
+
+    sudo -H -u devops bash -c '
+    cd /home/devops/${PROJ}
+    npm install --legacy-peer-deps
+    npm start'
 
     # concatenate required commands
-    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;$cmdGit;$cmdInitApp"
+    cmdW="$cmdPushWorkerFilesTmp;$cmdInitWorker;"
     # run commands
     bash -c "$cmdW"
 
-    i=$(($i + 1))
+    i=$(($proj + 1))
 done

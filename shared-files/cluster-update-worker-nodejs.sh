@@ -70,7 +70,7 @@ do
     cmdInstallNodejs='
         source ${FX_DIR}
         fxSubHeader "Install nvm/node.js and npm"          
-        fxExecWorkerTmpFile "installer-nodejs.sh"       ${CURRENT_INSTANCE}' 
+        # fxExecWorkerTmpFile "installer-nodejs.sh"       ${CURRENT_INSTANCE}' 
 
     # clone or update files
     # cmdGit='
@@ -96,44 +96,48 @@ do
     # run commands
     bash -c "$cmdW1"
 
-    sudo -H -u devops bash -c '
-    echo "--------${CURRENT_INSTANCE}: changing to home"
-    cd /home/devops
-    echo "--------${CURRENT_INSTANCE}: confirm current directory:"
-    pwd
-    echo "--------${CURRENT_INSTANCE}: confirm current current user:"
-    whoami
-    echo "--------${CURRENT_INSTANCE}: confirm home directory contents:"
-    ls -la /home/devops/
-    echo "--------${CURRENT_INSTANCE}: getting the latest cd-sio"
-    if [ -d "/home/devops/cd-sio" ]
-    then
-        cd /home/devops/cd-sio
-        git pull
-    else
-        cd /home/devops/
-        git clone https://github.com/corpdesk/cd-sio.git /home/devops/cd-sio
-    fi
+    # sudo -H -u devops bash -c '
+    # echo "--------${CURRENT_INSTANCE}: changing to home"
+    # cd /home/devops
+    # echo "--------${CURRENT_INSTANCE}: confirm current directory:"
+    # pwd
+    # echo "--------${CURRENT_INSTANCE}: confirm current current user:"
+    # whoami
+    # echo "--------${CURRENT_INSTANCE}: confirm home directory contents:"
+    # ls -la /home/devops/
+    # echo "--------${CURRENT_INSTANCE}: getting the latest cd-sio"
+    # if [ -d "/home/devops/cd-sio" ]
+    # then
+    #     cd /home/devops/cd-sio
+    #     git pull
+    # else
+    #     cd /home/devops/
+    #     git clone https://github.com/corpdesk/cd-sio.git /home/devops/cd-sio
+    # fi
     
-    echo "--------getting the latest cd-api"
-    if [ -d "/home/devops/cd-api" ]
-    then
-        cd /home/devops/cd-api
-        git pull
-    else
-        cd /home/devops/
-        git clone https://github.com/corpdesk/cd-api.git /home/devops/cd-api
-    fi'
+    # echo "--------getting the latest cd-api"
+    # if [ -d "/home/devops/cd-api" ]
+    # then
+    #     cd /home/devops/cd-api
+    #     git pull
+    # else
+    #     cd /home/devops/
+    #     git clone https://github.com/corpdesk/cd-api.git /home/devops/cd-api
+    # fi'
 
-    sudo -H -u devops bash -c '
-    cd /home/devops/cd-sio
-    npm install
-    npm start'
+    # sudo -H -u devops bash -c '
+    # export NVM_DIR="$HOME/.nvm"
+    # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
 
-    sudo -H -u devops bash -c '
-    cd /home/devops/cd-api
-    npm install
-    npm start'
+    # sudo -H -u devops bash -c '
+    # cd /home/devops/cd-sio
+    # npm install
+    # npm start'
+
+    # sudo -H -u devops bash -c '
+    # cd /home/devops/cd-api
+    # npm install
+    # npm start'
 
 
     
